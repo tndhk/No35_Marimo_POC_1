@@ -14,16 +14,18 @@ def _():
     import altair as alt
     from pathlib import Path
     import numpy as np
-    from sklearn.model_selection import train_test_split
+    import lightgbm as lgb
+    import re
+    from sklearn.model_selection import TimeSeriesSplit
     from sklearn.linear_model import LinearRegression, Ridge
     from sklearn.tree import DecisionTreeRegressor
-    from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+    from sklearn.ensemble import RandomForestRegressor
     from sklearn.metrics import mean_squared_error
     import warnings
     warnings.filterwarnings('ignore')
-    return (mo, pl, pd, alt, Path, np,
-            train_test_split, LinearRegression, Ridge,
-            DecisionTreeRegressor, RandomForestRegressor, GradientBoostingRegressor,
+    return (mo, pl, pd, alt, Path, np, lgb, re,
+            TimeSeriesSplit, LinearRegression, Ridge,
+            DecisionTreeRegressor, RandomForestRegressor,
             mean_squared_error)
 
 
@@ -348,7 +350,25 @@ def _(mo):
 
 
 @app.cell
-def _(pd, np):
+def _(pd, np, re):
+    def extract_menu_keywords(df, col_name='name'):
+        """メニュー名からキーワードフラグを作成する"""
+        # 抽出したいキーワードリスト
+        keywords = {
+            'curry': r'カレー',
+            'fry': r'フライ|カツ|唐揚げ|天ぷら',
+            'hamburg': r'ハンバーグ',
+            'fish': r'魚|サバ|鮭|ぶり|ブリ',
+            'meat': r'肉|牛|豚|鶏|チキン|ポーク|ビーフ',
+            'veg': r'野菜|筑前煮',
+        }
+        
+        for key, pattern in keywords.items():
+            df[f'menu_{key}'] = df[col_name].apply(
+                lambda x: 1 if re.search(pattern, str(x)) else 0
+            )
+        return df
+
     def create_features(df_pd, kcal_median=None, temp_median=None):
         """特徴量を作成する関数"""
         df_fe = df_pd.copy()
@@ -360,38 +380,42 @@ def _(pd, np):
         df_fe['year'] = df_fe['datetime'].dt.year
         df_fe['month'] = df_fe['datetime'].dt.month
         df_fe['day'] = df_fe['datetime'].dt.day
-        df_fe['dayofweek'] = df_fe['datetime'].dt.dayofweek  # 0=月曜, 4=金曜
-        df_fe['weekofyear'] = df_fe['datetime'].dt.isocalendar().week
+        df_fe['dayofweek'] = df_fe['datetime'].dt.dayofweek
+        df_fe['weekofyear'] = df_fe['datetime'].dt.isocalendar().week.astype(int)
+        
+        # 月初・月ハーフ・月末フラグ
+        df_fe['is_beginning_of_month'] = (df_fe['day'] <= 10).astype(int)
+        df_fe['is_middle_of_month'] = ((df_fe['day'] > 10) & (df_fe['day'] <= 20)).astype(int)
+        df_fe['is_end_of_month'] = (df_fe['day'] > 20).astype(int)
 
         # 曜日のワンホットエンコーディング
         week_dummies = pd.get_dummies(df_fe['week'], prefix='week')
         df_fe = pd.concat([df_fe, week_dummies], axis=1)
 
-        # 天気のワンホットエンコーディング（すべてのカテゴリを含める）
+        # 天気のワンホットエンコーディング
         weather_categories = ['快晴', '晴れ', '曇', '薄曇', '雨', '雪', '雷電']
         weather_categorical = pd.Categorical(df_fe['weather'], categories=weather_categories)
         weather_dummies = pd.get_dummies(weather_categorical, prefix='weather')
         df_fe = pd.concat([df_fe, weather_dummies], axis=1)
+        
+        # メニューキーワード抽出
+        df_fe = extract_menu_keywords(df_fe, 'name')
 
         # 欠損値処理
-        # kcal: 指定された中央値（または自身の中央値）で補完
         fill_kcal = kcal_median if kcal_median is not None else df_fe['kcal'].median()
         df_fe['kcal'] = df_fe['kcal'].fillna(fill_kcal)
 
-        # precipitation: "--" を 0 に変換、その後数値化
         df_fe['precipitation'] = df_fe['precipitation'].replace('--', '0')
         df_fe['precipitation'] = pd.to_numeric(df_fe['precipitation'], errors='coerce').fillna(0)
 
-        # temperature: 数値化
         df_fe['temperature'] = pd.to_numeric(df_fe['temperature'], errors='coerce')
         fill_temp = temp_median if temp_median is not None else df_fe['temperature'].median()
         df_fe['temperature'] = df_fe['temperature'].fillna(fill_temp)
 
-        # soldout, payday, event: 欠損値を0で補完
         df_fe['soldout'] = df_fe['soldout'].fillna(0).astype(int)
         df_fe['payday'] = df_fe['payday'].fillna(0).astype(float)
-        df_fe['event'] = df_fe['event'].notna().astype(int)  # イベントの有無（1/0）
-        df_fe['remarks'] = df_fe['remarks'].notna().astype(int)  # 備考の有無（1/0）
+        df_fe['event'] = df_fe['event'].notna().astype(int)
+        df_fe['remarks'] = df_fe['remarks'].notna().astype(int)
 
         return df_fe
 
@@ -423,145 +447,161 @@ def _(mo):
     mo.md("""
     ## 4. モデル構築と評価
 
-    複数のモデルを構築し、バリデーションセットでRMSEを評価します。
+    **LightGBM** を使用し、時系列データに適した **TimeSeriesSplit** で交差検証を行います。
     """)
     return
 
 
 @app.cell
-def _(df_train_fe, feature_cols):
-    # データ分割（時系列考慮で80/20分割）
-    X_train_full = df_train_fe[feature_cols]
-    y_train_full = df_train_fe['y']
+def _(
+    df_train_fe,
+    feature_cols,
+    lgb,
+    TimeSeriesSplit,
+    mean_squared_error,
+    np,
+    mo
+):
+    # 学習データ
+    X = df_train_fe[feature_cols]
+    y = df_train_fe['y']
 
-    # 訓練データとバリデーションデータに分割
-    split_idx = int(len(X_train_full) * 0.8)
-    X_train = X_train_full.iloc[:split_idx]
-    y_train = y_train_full.iloc[:split_idx]
-    X_val = X_train_full.iloc[split_idx:]
-    y_val = y_train_full.iloc[split_idx:]
+    # 時系列CVの設定
+    n_splits = 5
+    tscv = TimeSeriesSplit(n_splits=n_splits)
 
-    return X_train_full, y_train_full, X_train, y_train, X_val, y_val
+    # LightGBMパラメータ
+    params = {
+        'objective': 'regression',
+        'metric': 'rmse',
+        'boosting_type': 'gbdt',
+        'n_estimators': 1000,
+        'learning_rate': 0.05,
+        'max_depth': 7,
+        'num_leaves': 31,
+        'min_child_samples': 20,
+        'feature_fraction': 0.8,
+        'bagging_fraction': 0.8,
+        'bagging_freq': 5,
+        'verbosity': -1,
+        'random_state': 42
+    }
+
+    # CVループ
+    oof_preds = np.zeros(len(X))
+    cv_scores = []
+    models = []
+
+    print(f"Starting TimeSeriesSplit CV (n_splits={n_splits})...")
+
+    for fold, (train_index, val_index) in enumerate(tscv.split(X)):
+        X_train_fold, X_val_fold = X.iloc[train_index], X.iloc[val_index]
+        y_train_fold, y_val_fold = y.iloc[train_index], y.iloc[val_index]
+
+        model = lgb.LGBMRegressor(**params)
+        
+        # LightGBMのコールバックを使用して早期終了などを制御
+        callbacks = [
+            lgb.early_stopping(stopping_rounds=100, verbose=False),
+            lgb.log_evaluation(period=0) # ログ出力を抑制
+        ]
+
+        model.fit(
+            X_train_fold, 
+            y_train_fold,
+            eval_set=[(X_val_fold, y_val_fold)],
+            eval_metric='rmse',
+            callbacks=callbacks
+        )
+
+        val_pred = model.predict(X_val_fold)
+        oof_preds[val_index] = val_pred
+        
+        score = np.sqrt(mean_squared_error(y_val_fold, val_pred))
+        cv_scores.append(score)
+        models.append(model)
+        
+        print(f"Fold {fold+1} RMSE: {score:.4f}")
+
+    # 全体スコア（検証データが存在する部分のみ）
+    # TimeSeriesSplitでは最初のk個のデータは検証に使われないため、0以外の部分で計算
+    valid_indices = np.where(oof_preds != 0)[0]
+    overall_rmse = np.sqrt(mean_squared_error(y.iloc[valid_indices], oof_preds[valid_indices]))
+
+    mo.md(f"""
+    ### LightGBM Cross Validation 結果
+    - **Overall RMSE**: {overall_rmse:.4f}
+    - 各FoldのRMSE: {', '.join([f'{s:.2f}' for s in cv_scores])}
+    """)
+    
+    return X, y, models, overall_rmse, cv_scores
 
 
 @app.cell
-def _(X_train, y_train, X_val, y_val, LinearRegression, Ridge, mean_squared_error, np, mo):
-    # 線形回帰
-    lr_model = LinearRegression()
-    lr_model.fit(X_train, y_train)
-    lr_pred = lr_model.predict(X_val)
-    lr_rmse = np.sqrt(mean_squared_error(y_val, lr_pred))
-
-    # Ridge回帰
-    ridge_model = Ridge(alpha=10.0)
-    ridge_model.fit(X_train, y_train)
-    ridge_pred = ridge_model.predict(X_val)
-    ridge_rmse = np.sqrt(mean_squared_error(y_val, ridge_pred))
-
-    mo.md(f"""
-    ### 線形モデルの結果
-    - 線形回帰 RMSE: {lr_rmse:.2f}
-    - Ridge回帰 RMSE: {ridge_rmse:.2f}
-    """)
-
-    return lr_model, lr_rmse, ridge_model, ridge_rmse
+def _():
+    # 旧モデル（線形回帰・Ridge）のセルは削除されました
+    return
 
 
 @app.cell
-def _(X_train, y_train, X_val, y_val, DecisionTreeRegressor, RandomForestRegressor, mean_squared_error, np, mo):
-    # 決定木
-    dt_model = DecisionTreeRegressor(max_depth=5, min_samples_split=10, random_state=42)
-    dt_model.fit(X_train, y_train)
-    dt_pred = dt_model.predict(X_val)
-    dt_rmse = np.sqrt(mean_squared_error(y_val, dt_pred))
-
-    # ランダムフォレスト
-    rf_model = RandomForestRegressor(n_estimators=100, max_depth=5, min_samples_split=10, random_state=42)
-    rf_model.fit(X_train, y_train)
-    rf_pred = rf_model.predict(X_val)
-    rf_rmse = np.sqrt(mean_squared_error(y_val, rf_pred))
-
-    mo.md(f"""
-    ### 決定木系モデルの結果
-    - 決定木 RMSE: {dt_rmse:.2f}
-    - ランダムフォレスト RMSE: {rf_rmse:.2f}
-    """)
-
-    return dt_model, dt_rmse, rf_model, rf_rmse
+def _():
+    # 旧モデル（決定木・RF）のセルは削除されました
+    return
 
 
 @app.cell
-def _(X_train, y_train, X_val, y_val, GradientBoostingRegressor, mean_squared_error, np, mo):
-    # Gradient Boosting（LightGBM相当の性能を期待）
-    gb_model = GradientBoostingRegressor(
-        n_estimators=200,
-        learning_rate=0.05,
-        max_depth=5,
-        min_samples_split=10,
-        subsample=0.8,
-        random_state=42,
-        verbose=0
-    )
-
-    gb_model.fit(X_train, y_train)
-    gb_pred = gb_model.predict(X_val)
-    gb_rmse = np.sqrt(mean_squared_error(y_val, gb_pred))
-
-    mo.md(f"""
-    ### Gradient Boosting（勾配ブースティング）の結果
-    - RMSE: {gb_rmse:.2f}
-    """)
-
-    return gb_model, gb_rmse
+def _():
+    # 旧モデル（GBR）のセルは削除されました
+    return
 
 
 # ===== グループF: 予測と提出 =====
 
 @app.cell
-def _(lr_rmse, ridge_rmse, dt_rmse, rf_rmse, gb_rmse, pd):
-    # モデル比較表
-    model_comparison = pd.DataFrame({
-        'モデル': ['線形回帰', 'Ridge回帰', '決定木', 'ランダムフォレスト', 'Gradient Boosting'],
-        'RMSE': [lr_rmse, ridge_rmse, dt_rmse, rf_rmse, gb_rmse]
-    }).sort_values('RMSE')
-
-    model_comparison
-    return model_comparison,
-
-
-@app.cell
-def _(model_comparison, lr_model, ridge_model, dt_model, rf_model, gb_model, mo):
-    # ベストモデルの選択
-    best_model_name = model_comparison.iloc[0]['モデル']
-    best_rmse = model_comparison.iloc[0]['RMSE']
-
-    # モデル名から実際のモデルオブジェクトを選択
-    model_dict = {
-        '線形回帰': lr_model,
-        'Ridge回帰': ridge_model,
-        '決定木': dt_model,
-        'ランダムフォレスト': rf_model,
-        'Gradient Boosting': gb_model
-    }
-    best_model = model_dict[best_model_name]
-
+def _(overall_rmse, mo):
     mo.md(f"""
-    ## 5. 最終予測
+    ## 5. 最終モデル評価
 
-    ### ベストモデル
-    - モデル: {best_model_name}
-    - バリデーションRMSE: {best_rmse:.2f}
+    ### ベストモデル: LightGBM (TimeSeriesSplit CV)
+    - **Cross Validation RMSE**: {overall_rmse:.4f}
+
+    ※ 時系列分割交差検証の結果、上記の精度が得られました。全データで再学習させて提出用予測を作成します。
     """)
-
-    return best_model, best_model_name
+    return
 
 
 @app.cell
-def _(df_test_fe, feature_cols, best_model):
+def _(X, y, lgb):
+    # 全データでの再学習
+    # CVで良さそうなパラメータを使用（ここでは固定）
+    params = {
+        'objective': 'regression',
+        'metric': 'rmse',
+        'boosting_type': 'gbdt',
+        'n_estimators': 1200, # 全データなので少し増やす
+        'learning_rate': 0.05,
+        'max_depth': 7,
+        'num_leaves': 31,
+        'min_child_samples': 20,
+        'feature_fraction': 0.8,
+        'bagging_fraction': 0.8,
+        'bagging_freq': 5,
+        'verbosity': -1,
+        'random_state': 42
+    }
+
+    final_model = lgb.LGBMRegressor(**params)
+    final_model.fit(X, y)
+    
+    return final_model,
+
+
+@app.cell
+def _(df_test_fe, feature_cols, final_model):
     # テストデータへの予測
     X_test = df_test_fe[feature_cols]
 
-    test_predictions = best_model.predict(X_test)
+    test_predictions = final_model.predict(X_test)
 
     # 負の値を0にクリップ（販売数は0以上）
     test_predictions = [max(0, pred) for pred in test_predictions]
