@@ -51,19 +51,17 @@
 ### 環境有効化とパッケージインストール
 
 ```bash
+cd projects/bento
+python3 -m venv .venv
 source .venv/bin/activate
-# プロジェクトに応じたインストール
-pip install -r projects/bento/requirements.txt
+pip install -r requirements.txt
 ```
 
 ### アプリの起動
 
 ```bash
-# お弁当分析
-marimo edit projects/bento/notebooks/bento_analysis.py
-
-# Titanic分析
-marimo edit projects/titanic/notebooks/titanic_analysis.py
+# プロジェクトディレクトリ内で実行
+marimo edit notebooks/bento_analysis.py
 ```
 
 ## 実装パターン
