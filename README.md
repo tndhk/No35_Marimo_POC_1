@@ -2,6 +2,27 @@
 
 marimoを使ったインタラクティブなデータ分析プラットフォーム。
 
+## プロジェクト構成
+
+本リポジトリは複数の分析プロジェクトを管理するモノレポ構成になっています。
+
+```
+.
+├── projects/
+│   ├── bento/                  # お弁当販売数予測
+│   │   ├── data/              # データファイル
+│   │   ├── notebooks/         # marimoノートブック
+│   │   └── requirements.txt   # 依存ライブラリ
+│   │
+│   └── titanic/                # Titanic生存予測
+│       ├── data/
+│       ├── notebooks/
+│       └── requirements.txt
+├── .venv/                      # Python仮想環境（共有）
+├── .claude/                    # 開発者向け設定
+└── README.md                   # このファイル
+```
+
 ## 環境構築
 
 ### 1. 仮想環境の作成と有効化
@@ -13,73 +34,58 @@ source .venv/bin/activate
 
 ### 2. パッケージのインストール
 
+分析したいプロジェクトに合わせて依存ライブラリをインストールします。
+
+**例: Bentoプロジェクト（お弁当販売予測）の場合**
 ```bash
-pip install -r requirements.txt
+pip install -r projects/bento/requirements.txt
 ```
 
-### 3. データの準備
-
-分析用のデータファイルを `data/` ディレクトリに配置してください。
+**例: Titanicプロジェクトの場合**
+```bash
+pip install -r projects/titanic/requirements.txt
+```
 
 ## 使用方法
 
 ### marimoアプリの起動
 
+プロジェクトごとのノートブックを指定して起動します。
+
+**Bento分析の起動**
 ```bash
 source .venv/bin/activate
-marimo edit notebooks/<notebook_name>.py
+marimo edit projects/bento/notebooks/bento_analysis.py
 ```
 
-ブラウザが自動的に開き、インタラクティブな分析環境が利用できます。
-
-### 別のポートで実行
-
+**Titanic分析の起動**
 ```bash
-marimo edit --port 2719 notebooks/<notebook_name>.py
+source .venv/bin/activate
+marimo edit projects/titanic/notebooks/titanic_analysis.py
 ```
 
 ## 使用技術
 
 - **marimo**: インタラクティブなPythonノートブック環境
-- **polars-lts-cpu**: 高速データフレーム処理（Apple Silicon互換版）
+- **polars**: 高速データフレーム処理
 - **altair**: 宣言的なグラフ可視化
-- **pandas, pyarrow**: データ形式変換
+- **scikit-learn**: 機械学習（Bentoプロジェクト等）
 
-## プロジェクト構造
+## 新しい分析プロジェクトの追加
 
-```
-.
-├── .venv/                      # Python仮想環境
-├── .claude/
-│   └── CLAUDE.md              # 開発者向けガイド
-├── data/
-│   └── *.csv                  # 分析用データファイル
-├── notebooks/
-│   └── *.py                   # marimoアプリケーション
-├── .gitignore                 # Git除外設定
-├── requirements.txt           # パッケージ依存関係
-└── README.md                  # このファイル
-```
-
-## 新しい分析の追加
-
-### 新規ノートブックの作成
+新しい分析テーマを開始する場合は、`projects/` 配下に新しいディレクトリを作成します。
 
 ```bash
-# テンプレートとして既存のノートブックをコピー
-cp notebooks/example_analysis.py notebooks/my_analysis.py
+# 1. プロジェクトディレクトリの作成
+mkdir -p projects/new_project/data
+mkdir -p projects/new_project/notebooks
 
-# 必要に応じてカスタマイズして起動
-marimo edit notebooks/my_analysis.py
+# 2. requirements.txtの作成（基本セット）
+echo -e "marimo>=0.9.0\npolars-lts-cpu>=0.20.0\naltair>=5.2.0" > projects/new_project/requirements.txt
+
+# 3. ノートブックの作成と起動
+marimo edit projects/new_project/notebooks/analysis.py
 ```
-
-### marimoセル設計のベストプラクティス
-
-- セル関数の引数で依存関係を明示的に表現
-- 同じ変数を複数のセルで定義しない（共有データは専用セルで一度だけ処理）
-- `return` で出力変数を明示的に指定
-
-詳細は `.claude/CLAUDE.md` を参照。
 
 ## 開発者向け情報
 
