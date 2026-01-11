@@ -46,4 +46,6 @@ Thumbs.db
 # ローカル設定
 .env
 .env.local
-\n# 分析出力ファイル\nsubmission.csv
+
+# 分析出力ファイル
+submission.csv

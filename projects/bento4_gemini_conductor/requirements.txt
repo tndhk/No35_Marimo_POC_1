@@ -1,0 +1,6 @@
+marimo
+polars[rtcompat]
+altair
+scikit-learn
+numpy
+pandas

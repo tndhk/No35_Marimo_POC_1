@@ -1,0 +1,364 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.19.2"
+  },
+  "cells": [
+    {
+      "id": "PKri",
+      "code_hash": "003f24d98fb70233cb20a45460d77d05",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"bento-sales-prediction-analysis-bento4\">Bento Sales Prediction Analysis (Bento4)</h1></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Hbol",
+      "code_hash": "56ed29c17742276c94cf53caed89f389",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "ab12cca48624b729eaf3e57230cafb2a",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "Name `X_train` is not defined. It was expected to be defined in ",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/h_/x1cy3r8n503g3kl8zr7cg4qr0000gn/T/marimo_65959/__marimo__cell_MJUe_.py&quot;</span>, line <span class=\"m\">3</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">model</span><span class=\"o\">.</span><span class=\"n\">fit</span><span class=\"p\">(</span><span class=\"n\">X_train</span><span class=\"p\">,</span> <span class=\"n\">y_train</span><span class=\"p\">)</span>\n<span class=\"w\">              </span><span class=\"pm\">^^^^^^^</span>\n<span class=\"gr\">NameError</span>: <span class=\"n\">name &#39;X_train&#39; is not defined. Did you mean: &#39;train&#39;?</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "vblA",
+      "code_hash": "d5e0eb3a72e6eb9430c4c40144bf9f08",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "Name `y_val` is not defined. It was expected to be defined in ",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/h_/x1cy3r8n503g3kl8zr7cg4qr0000gn/T/marimo_65959/__marimo__cell_vblA_.py&quot;</span>, line <span class=\"m\">3</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"s2\">&quot;actual&quot;</span><span class=\"p\">:</span> <span class=\"n\">y_val</span><span class=\"p\">,</span>\n<span class=\"w\">              </span><span class=\"pm\">^^^^^</span>\n<span class=\"gr\">NameError</span>: <span class=\"n\">name &#39;y_val&#39; is not defined. Did you mean: &#39;eval&#39;?</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "3c5549587ec11a8525dc67dfbb257dcf",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "An ancestor raised an exception (MarimoExceptionRaisedError): ",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/h_/x1cy3r8n503g3kl8zr7cg4qr0000gn/T/marimo_65959/__marimo__cell_bkHC_.py&quot;</span>, line <span class=\"m\">2</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">_importances</span> <span class=\"o\">=</span> <span class=\"n\">model</span><span class=\"o\">.</span><span class=\"n\">feature_importances_</span>\n<span class=\"w\">                   </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/sklearn/ensemble/_forest.py&quot;</span>, line <span class=\"m\">670</span>, in <span class=\"n\">feature_importances_</span>\n<span class=\"w\">    </span><span class=\"n\">check_is_fitted</span><span class=\"p\">(</span><span class=\"bp\">self</span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">~~~~~~~~~~~~~~~^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/sklearn/utils/validation.py&quot;</span>, line <span class=\"m\">1705</span>, in <span class=\"n\">check_is_fitted</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"n\">NotFittedError</span><span class=\"p\">(</span><span class=\"n\">msg</span> <span class=\"o\">%</span> <span class=\"p\">{</span><span class=\"s2\">&quot;name&quot;</span><span class=\"p\">:</span> <span class=\"nb\">type</span><span class=\"p\">(</span><span class=\"n\">estimator</span><span class=\"p\">)</span><span class=\"o\">.</span><span class=\"vm\">__name__</span><span class=\"p\">})</span>\n<span class=\"gr\">sklearn.exceptions.NotFittedError</span>: <span class=\"n\">This RandomForestRegressor instance is not fitted yet. Call &#39;fit&#39; with appropriate arguments before using this estimator.</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "1f60e68e41a9dd0aad91cbd5b2138a9b",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "Name `X_val` is not defined. It was expected to be defined in ",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/h_/x1cy3r8n503g3kl8zr7cg4qr0000gn/T/marimo_65959/__marimo__cell_lEQa_.py&quot;</span>, line <span class=\"m\">2</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">_val_df</span> <span class=\"o\">=</span> <span class=\"n\">X_val</span><span class=\"o\">.</span><span class=\"n\">copy</span><span class=\"p\">()</span>\n<span class=\"w\">              </span><span class=\"pm\">^^^^^</span>\n<span class=\"gr\">NameError</span>: <span class=\"n\">name &#39;X_val&#39; is not defined. Did you mean: &#39;eval&#39;?</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "Xref",
+      "code_hash": "2f910da7cdf6b574bf7e1b670821387a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "d4c4de9f89d64bff7d2967277554830a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"train-data-first-5-rows\">Train Data (First 5 rows)</h2></span><marimo-ui-element object-id='SFPL-0' random-id='33f413e5-cb65-ca2a-13fe-734a23391764'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-18&#92;&quot;,&#92;&quot;y&#92;&quot;:90,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u6708&#92;&quot;,&#92;&quot;soldout&#92;&quot;:0,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u539a&#92;&#92;u5207&#92;&#92;u308a&#92;&#92;u30a4&#92;&#92;u30ab&#92;&#92;u30d5&#92;&#92;u30e9&#92;&#92;u30a4&#92;&quot;,&#92;&quot;kcal&#92;&quot;:null,&#92;&quot;remarks&#92;&quot;:null,&#92;&quot;event&#92;&quot;:null,&#92;&quot;payday&#92;&quot;:null,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:&#92;&quot;--&#92;&quot;,&#92;&quot;temperature&#92;&quot;:19.8},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-19&#92;&quot;,&#92;&quot;y&#92;&quot;:101,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u706b&#92;&quot;,&#92;&quot;soldout&#92;&quot;:1,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u624b&#92;&#92;u4f5c&#92;&#92;u308a&#92;&#92;u30d2&#92;&#92;u30ec&#92;&#92;u30ab&#92;&#92;u30c4&#92;&quot;,&#92;&quot;kcal&#92;&quot;:null,&#92;&quot;remarks&#92;&quot;:null,&#92;&quot;event&#92;&quot;:null,&#92;&quot;payday&#92;&quot;:null,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:&#92;&quot;--&#92;&quot;,&#92;&quot;temperature&#92;&quot;:17.0},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-20&#92;&quot;,&#92;&quot;y&#92;&quot;:118,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u6c34&#92;&quot;,&#92;&quot;soldout&#92;&quot;:0,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u767d&#92;&#92;u8eab&#92;&#92;u9b5a&#92;&#92;u5510&#92;&#92;u63da&#92;&#92;u3052&#92;&#92;u91ce&#92;&#92;u83dc&#92;&#92;u3042&#92;&#92;u3093&#92;&quot;,&#92;&quot;kcal&#92;&quot;:null,&#92;&quot;remarks&#92;&quot;:null,&#92;&quot;event&#92;&quot;:null,&#92;&quot;payday&#92;&quot;:null,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:&#92;&quot;--&#92;&quot;,&#92;&quot;temperature&#92;&quot;:15.5},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-21&#92;&quot;,&#92;&quot;y&#92;&quot;:120,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u6728&#92;&quot;,&#92;&quot;soldout&#92;&quot;:1,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u82e5&#92;&#92;u9d8f&#92;&#92;u30d4&#92;&#92;u30ea&#92;&#92;u8f9b&#92;&#92;u713c&#92;&quot;,&#92;&quot;kcal&#92;&quot;:null,&#92;&quot;remarks&#92;&quot;:null,&#92;&quot;event&#92;&quot;:null,&#92;&quot;payday&#92;&quot;:null,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:&#92;&quot;--&#92;&quot;,&#92;&quot;temperature&#92;&quot;:15.2},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-22&#92;&quot;,&#92;&quot;y&#92;&quot;:130,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u91d1&#92;&quot;,&#92;&quot;soldout&#92;&quot;:1,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u30d3&#92;&#92;u30c3&#92;&#92;u30b0&#92;&#92;u30e1&#92;&#92;u30f3&#92;&#92;u30c1&#92;&#92;u30ab&#92;&#92;u30c4&#92;&quot;,&#92;&quot;kcal&#92;&quot;:null,&#92;&quot;remarks&#92;&quot;:null,&#92;&quot;event&#92;&quot;:null,&#92;&quot;payday&#92;&quot;:null,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:&#92;&quot;--&#92;&quot;,&#92;&quot;temperature&#92;&quot;:16.1}]&quot;' data-total-rows='5' data-total-columns='12' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;datetime&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;y&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;week&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;soldout&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;name&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;kcal&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;remarks&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;event&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;payday&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;weather&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;precipitation&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;temperature&quot;,[&quot;number&quot;,&quot;f64&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "8dd6787bc7b05632ca1ef6bca181ee23",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"test-data-first-5-rows\">Test Data (First 5 rows)</h2></span><marimo-ui-element object-id='BYtC-0' random-id='499fdd94-8f4b-790a-edb3-b6dd3daf2818'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2014-10-1&#92;&quot;,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u6c34&#92;&quot;,&#92;&quot;soldout&#92;&quot;:1,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u30e1&#92;&#92;u30f3&#92;&#92;u30c1&#92;&#92;u30ab&#92;&#92;u30c4&#92;&quot;,&#92;&quot;kcal&#92;&quot;:420.0,&#92;&quot;remarks&#92;&quot;:null,&#92;&quot;event&#92;&quot;:null,&#92;&quot;payday&#92;&quot;:null,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u96e8&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:&#92;&quot;0&#92;&quot;,&#92;&quot;temperature&#92;&quot;:20.2},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2014-10-2&#92;&quot;,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u6728&#92;&quot;,&#92;&quot;soldout&#92;&quot;:0,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u30d0&#92;&#92;u30fc&#92;&#92;u30d9&#92;&#92;u30ad&#92;&#92;u30e5&#92;&#92;u30fc&#92;&#92;u30c1&#92;&#92;u30ad&#92;&#92;u30f3&#92;&quot;,&#92;&quot;kcal&#92;&quot;:415.0,&#92;&quot;remarks&#92;&quot;:null,&#92;&quot;event&#92;&quot;:null,&#92;&quot;payday&#92;&quot;:null,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u66c7&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:&#92;&quot;--&#92;&quot;,&#92;&quot;temperature&#92;&quot;:23.9},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2014-10-3&#92;&quot;,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u91d1&#92;&quot;,&#92;&quot;soldout&#92;&quot;:0,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u8c5a&#92;&#92;u8089&#92;&#92;u306e&#92;&#92;u30de&#92;&#92;u30b9&#92;&#92;u30bf&#92;&#92;u30fc&#92;&#92;u30c9&#92;&#92;u713c&#92;&#92;u304d&#92;&quot;,&#92;&quot;kcal&#92;&quot;:405.0,&#92;&quot;remarks&#92;&quot;:null,&#92;&quot;event&#92;&quot;:null,&#92;&quot;payday&#92;&quot;:null,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u6674&#92;&#92;u308c&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:&#92;&quot;--&#92;&quot;,&#92;&quot;temperature&#92;&quot;:28.7},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2014-10-6&#92;&quot;,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u6708&#92;&quot;,&#92;&quot;soldout&#92;&quot;:1,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u9ebb&#92;&#92;u5a46&#92;&#92;u6625&#92;&#92;u96e8&#92;&quot;,&#92;&quot;kcal&#92;&quot;:400.0,&#92;&quot;remarks&#92;&quot;:null,&#92;&quot;event&#92;&quot;:null,&#92;&quot;payday&#92;&quot;:null,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u96e8&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:&#92;&quot;0.5&#92;&quot;,&#92;&quot;temperature&#92;&quot;:21.5},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2014-10-7&#92;&quot;,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u706b&#92;&quot;,&#92;&quot;soldout&#92;&quot;:0,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u539a&#92;&#92;u63da&#92;&#92;u3052&#92;&#92;u8089&#92;&#92;u307f&#92;&#92;u305d&#92;&#92;u7092&#92;&#92;u3081&#92;&quot;,&#92;&quot;kcal&#92;&quot;:430.0,&#92;&quot;remarks&#92;&quot;:null,&#92;&quot;event&#92;&quot;:null,&#92;&quot;payday&#92;&quot;:null,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u6674&#92;&#92;u308c&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:&#92;&quot;--&#92;&quot;,&#92;&quot;temperature&#92;&quot;:22.1}]&quot;' data-total-rows='5' data-total-columns='11' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;datetime&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;week&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;soldout&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;name&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;kcal&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;remarks&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;event&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;payday&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;weather&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;precipitation&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;temperature&quot;,[&quot;number&quot;,&quot;f64&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "f326eedc5c08d2adc61e122078ddba17",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"data-inspection-train\">Data Inspection: Train</h2></span><div style='display: flex;flex: 1;flex-direction: row;justify-content: space-between;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"schema\">Schema</h3></span><pre class='text-xs'>Schema({&#x27;datetime&#x27;: String, &#x27;y&#x27;: Int64, &#x27;week&#x27;: String, &#x27;soldout&#x27;: Int64, &#x27;name&#x27;: String, &#x27;kcal&#x27;: Float64, &#x27;remarks&#x27;: String, &#x27;event&#x27;: String, &#x27;payday&#x27;: Float64, &#x27;weather&#x27;: String, &#x27;precipitation&#x27;: String, &#x27;temperature&#x27;: Float64})</pre></div><div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"null-counts\">Null Counts</h3></span><marimo-ui-element object-id='RGSE-0' random-id='7136b4ea-1389-d227-2d03-8d7063feeea5'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;datetime&#92;&quot;:0,&#92;&quot;y&#92;&quot;:0,&#92;&quot;week&#92;&quot;:0,&#92;&quot;soldout&#92;&quot;:0,&#92;&quot;name&#92;&quot;:0,&#92;&quot;kcal&#92;&quot;:41,&#92;&quot;remarks&#92;&quot;:186,&#92;&quot;event&#92;&quot;:193,&#92;&quot;payday&#92;&quot;:197,&#92;&quot;weather&#92;&quot;:0,&#92;&quot;precipitation&#92;&quot;:0,&#92;&quot;temperature&#92;&quot;:0}]&quot;' data-total-rows='1' data-total-columns='12' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;datetime&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;y&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;week&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;soldout&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;name&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;kcal&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;remarks&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;event&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;payday&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;weather&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;precipitation&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;temperature&quot;,[&quot;integer&quot;,&quot;u64&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div></div></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "a6fe6bfcb0f23cc1a9c3778b74eff91a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"data-inspection-test\">Data Inspection: Test</h2></span><div style='display: flex;flex: 1;flex-direction: row;justify-content: space-between;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"schema\">Schema</h3></span><pre class='text-xs'>Schema({&#x27;datetime&#x27;: String, &#x27;week&#x27;: String, &#x27;soldout&#x27;: Int64, &#x27;name&#x27;: String, &#x27;kcal&#x27;: Float64, &#x27;remarks&#x27;: String, &#x27;event&#x27;: String, &#x27;payday&#x27;: Float64, &#x27;weather&#x27;: String, &#x27;precipitation&#x27;: String, &#x27;temperature&#x27;: Float64})</pre></div><div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"null-counts\">Null Counts</h3></span><marimo-ui-element object-id='Kclp-0' random-id='68a67ed1-1286-e9b7-2073-468d3f08d77d'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;datetime&#92;&quot;:0,&#92;&quot;week&#92;&quot;:0,&#92;&quot;soldout&#92;&quot;:0,&#92;&quot;name&#92;&quot;:0,&#92;&quot;kcal&#92;&quot;:4,&#92;&quot;remarks&#92;&quot;:33,&#92;&quot;event&#92;&quot;:37,&#92;&quot;payday&#92;&quot;:38,&#92;&quot;weather&#92;&quot;:0,&#92;&quot;precipitation&#92;&quot;:0,&#92;&quot;temperature&#92;&quot;:0}]&quot;' data-total-rows='1' data-total-columns='11' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;datetime&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;week&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;soldout&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;name&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;kcal&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;remarks&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;event&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;payday&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;weather&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;precipitation&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;temperature&quot;,[&quot;integer&quot;,&quot;u64&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div></div></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "76aee7a2cc840906e5a133fda4cc2a61",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "pa.Table requires 'pyarrow' module to be installed",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/h_/x1cy3r8n503g3kl8zr7cg4qr0000gn/T/marimo_65959/__marimo__cell_emfo_.py&quot;</span>, line <span class=\"m\">1</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">_chart</span> <span class=\"o\">=</span> <span class=\"n\">alt</span><span class=\"o\">.</span><span class=\"n\">Chart</span><span class=\"p\">(</span><span class=\"n\">train</span><span class=\"o\">.</span><span class=\"n\">to_pandas</span><span class=\"p\">())</span><span class=\"o\">.</span><span class=\"n\">mark_bar</span><span class=\"p\">()</span><span class=\"o\">.</span><span class=\"n\">encode</span><span class=\"p\">(</span>\n<span class=\"w\">                       </span><span class=\"pm\">~~~~~~~~~~~~~~~^^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/dataframe/frame.py&quot;</span>, line <span class=\"m\">2573</span>, in <span class=\"n\">to_pandas</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_to_pandas_without_object_columns</span><span class=\"p\">(</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^</span>\n<span class=\"w\">    </span>    <span class=\"bp\">self</span><span class=\"p\">,</span> <span class=\"n\">use_pyarrow_extension_array</span><span class=\"o\">=</span><span class=\"n\">use_pyarrow_extension_array</span><span class=\"p\">,</span> <span class=\"o\">**</span><span class=\"n\">kwargs</span>\n<span class=\"w\">        </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n<span class=\"w\">    </span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/dataframe/frame.py&quot;</span>, line <span class=\"m\">2625</span>, in <span class=\"n\">_to_pandas_without_object_columns</span>\n<span class=\"w\">    </span><span class=\"n\">tbl</span> <span class=\"o\">=</span> <span class=\"n\">pa</span><span class=\"o\">.</span><span class=\"n\">Table</span><span class=\"o\">.</span><span class=\"n\">from_batches</span><span class=\"p\">(</span><span class=\"n\">record_batches</span><span class=\"p\">)</span>\n<span class=\"w\">          </span><span class=\"pm\">^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/_dependencies.py&quot;</span>, line <span class=\"m\">104</span>, in <span class=\"n\">__getattr__</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"ne\">ModuleNotFoundError</span><span class=\"p\">(</span><span class=\"n\">msg</span><span class=\"p\">)</span> <span class=\"kn\">from</span><span class=\"w\"> </span><span class=\"kc\">None</span>\n<span class=\"gr\">ModuleNotFoundError</span>: <span class=\"n\">pa.Table requires &#39;pyarrow&#39; module to be installed</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "4e37818604865d7b82c54d05e5fe9904",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "pa.Table requires 'pyarrow' module to be installed",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/h_/x1cy3r8n503g3kl8zr7cg4qr0000gn/T/marimo_65959/__marimo__cell_Hstk_.py&quot;</span>, line <span class=\"m\">4</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"p\">)</span><span class=\"o\">.</span><span class=\"n\">to_pandas</span><span class=\"p\">()</span>\n<span class=\"w\">      </span><span class=\"pm\">~~~~~~~~~^^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/dataframe/frame.py&quot;</span>, line <span class=\"m\">2573</span>, in <span class=\"n\">to_pandas</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_to_pandas_without_object_columns</span><span class=\"p\">(</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^</span>\n<span class=\"w\">    </span>    <span class=\"bp\">self</span><span class=\"p\">,</span> <span class=\"n\">use_pyarrow_extension_array</span><span class=\"o\">=</span><span class=\"n\">use_pyarrow_extension_array</span><span class=\"p\">,</span> <span class=\"o\">**</span><span class=\"n\">kwargs</span>\n<span class=\"w\">        </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n<span class=\"w\">    </span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/dataframe/frame.py&quot;</span>, line <span class=\"m\">2625</span>, in <span class=\"n\">_to_pandas_without_object_columns</span>\n<span class=\"w\">    </span><span class=\"n\">tbl</span> <span class=\"o\">=</span> <span class=\"n\">pa</span><span class=\"o\">.</span><span class=\"n\">Table</span><span class=\"o\">.</span><span class=\"n\">from_batches</span><span class=\"p\">(</span><span class=\"n\">record_batches</span><span class=\"p\">)</span>\n<span class=\"w\">          </span><span class=\"pm\">^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/_dependencies.py&quot;</span>, line <span class=\"m\">104</span>, in <span class=\"n\">__getattr__</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"ne\">ModuleNotFoundError</span><span class=\"p\">(</span><span class=\"n\">msg</span><span class=\"p\">)</span> <span class=\"kn\">from</span><span class=\"w\"> </span><span class=\"kc\">None</span>\n<span class=\"gr\">ModuleNotFoundError</span>: <span class=\"n\">pa.Table requires &#39;pyarrow&#39; module to be installed</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "3cdf551f76bcfb73a553790814f61c25",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "pa.Table requires 'pyarrow' module to be installed",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/h_/x1cy3r8n503g3kl8zr7cg4qr0000gn/T/marimo_65959/__marimo__cell_nWHF_.py&quot;</span>, line <span class=\"m\">7</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">_corr_data</span> <span class=\"o\">=</span> <span class=\"n\">_numeric_cols</span><span class=\"o\">.</span><span class=\"n\">to_pandas</span><span class=\"p\">()</span><span class=\"o\">.</span><span class=\"n\">corr</span><span class=\"p\">()[</span><span class=\"s2\">&quot;y&quot;</span><span class=\"p\">]</span><span class=\"o\">.</span><span class=\"n\">reset_index</span><span class=\"p\">()</span>\n<span class=\"w\">                 </span><span class=\"pm\">~~~~~~~~~~~~~~~~~~~~~~~^^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/dataframe/frame.py&quot;</span>, line <span class=\"m\">2573</span>, in <span class=\"n\">to_pandas</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_to_pandas_without_object_columns</span><span class=\"p\">(</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^</span>\n<span class=\"w\">    </span>    <span class=\"bp\">self</span><span class=\"p\">,</span> <span class=\"n\">use_pyarrow_extension_array</span><span class=\"o\">=</span><span class=\"n\">use_pyarrow_extension_array</span><span class=\"p\">,</span> <span class=\"o\">**</span><span class=\"n\">kwargs</span>\n<span class=\"w\">        </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n<span class=\"w\">    </span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/dataframe/frame.py&quot;</span>, line <span class=\"m\">2625</span>, in <span class=\"n\">_to_pandas_without_object_columns</span>\n<span class=\"w\">    </span><span class=\"n\">tbl</span> <span class=\"o\">=</span> <span class=\"n\">pa</span><span class=\"o\">.</span><span class=\"n\">Table</span><span class=\"o\">.</span><span class=\"n\">from_batches</span><span class=\"p\">(</span><span class=\"n\">record_batches</span><span class=\"p\">)</span>\n<span class=\"w\">          </span><span class=\"pm\">^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/_dependencies.py&quot;</span>, line <span class=\"m\">104</span>, in <span class=\"n\">__getattr__</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"ne\">ModuleNotFoundError</span><span class=\"p\">(</span><span class=\"n\">msg</span><span class=\"p\">)</span> <span class=\"kn\">from</span><span class=\"w\"> </span><span class=\"kc\">None</span>\n<span class=\"gr\">ModuleNotFoundError</span>: <span class=\"n\">pa.Table requires &#39;pyarrow&#39; module to be installed</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "iLit",
+      "code_hash": "d3e14b63e82832a205adf09a7b81f30f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"missing-values-handled\">Missing Values Handled</h2></span><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"train-null-counts-after-processing\">Train Null Counts after processing:</h3></span><marimo-ui-element object-id='iLit-0' random-id='2c86fd06-9fda-43fe-1eaa-8e42ca67d2d1'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;datetime&#92;&quot;:0,&#92;&quot;y&#92;&quot;:0,&#92;&quot;week&#92;&quot;:0,&#92;&quot;soldout&#92;&quot;:0,&#92;&quot;name&#92;&quot;:0,&#92;&quot;kcal&#92;&quot;:0,&#92;&quot;remarks&#92;&quot;:0,&#92;&quot;event&#92;&quot;:0,&#92;&quot;payday&#92;&quot;:0,&#92;&quot;weather&#92;&quot;:0,&#92;&quot;precipitation&#92;&quot;:0,&#92;&quot;temperature&#92;&quot;:0}]&quot;' data-total-rows='1' data-total-columns='12' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;datetime&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;y&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;week&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;soldout&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;name&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;kcal&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;remarks&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;event&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;payday&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;weather&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;precipitation&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;temperature&quot;,[&quot;integer&quot;,&quot;u64&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"test-null-counts-after-processing\">Test Null Counts after processing:</h3></span><marimo-ui-element object-id='iLit-1' random-id='8126b21c-10f2-f1ac-91ac-72297be49538'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;datetime&#92;&quot;:0,&#92;&quot;week&#92;&quot;:0,&#92;&quot;soldout&#92;&quot;:0,&#92;&quot;name&#92;&quot;:0,&#92;&quot;kcal&#92;&quot;:0,&#92;&quot;remarks&#92;&quot;:0,&#92;&quot;event&#92;&quot;:0,&#92;&quot;payday&#92;&quot;:0,&#92;&quot;weather&#92;&quot;:0,&#92;&quot;precipitation&#92;&quot;:0,&#92;&quot;temperature&#92;&quot;:0}]&quot;' data-total-rows='1' data-total-columns='11' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;datetime&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;week&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;soldout&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;name&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;kcal&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;remarks&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;event&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;payday&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;weather&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;precipitation&quot;,[&quot;integer&quot;,&quot;u64&quot;]],[&quot;temperature&quot;,[&quot;integer&quot;,&quot;u64&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "90493d05e5136097c8d243e27410cf6a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"date-features-extracted\">Date Features Extracted</h2></span><marimo-ui-element object-id='ZHCJ-0' random-id='07daf9d6-a2ab-6c1a-7dc0-7700e2a032e9'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-18&#92;&quot;,&#92;&quot;y&#92;&quot;:90,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u6708&#92;&quot;,&#92;&quot;soldout&#92;&quot;:0,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u539a&#92;&#92;u5207&#92;&#92;u308a&#92;&#92;u30a4&#92;&#92;u30ab&#92;&#92;u30d5&#92;&#92;u30e9&#92;&#92;u30a4&#92;&quot;,&#92;&quot;kcal&#92;&quot;:404.4096385542169,&#92;&quot;remarks&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;event&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;payday&#92;&quot;:0.0,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:0.0,&#92;&quot;temperature&#92;&quot;:19.8,&#92;&quot;month&#92;&quot;:11,&#92;&quot;day&#92;&quot;:18},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-19&#92;&quot;,&#92;&quot;y&#92;&quot;:101,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u706b&#92;&quot;,&#92;&quot;soldout&#92;&quot;:1,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u624b&#92;&#92;u4f5c&#92;&#92;u308a&#92;&#92;u30d2&#92;&#92;u30ec&#92;&#92;u30ab&#92;&#92;u30c4&#92;&quot;,&#92;&quot;kcal&#92;&quot;:404.4096385542169,&#92;&quot;remarks&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;event&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;payday&#92;&quot;:0.0,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:0.0,&#92;&quot;temperature&#92;&quot;:17.0,&#92;&quot;month&#92;&quot;:11,&#92;&quot;day&#92;&quot;:19},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-20&#92;&quot;,&#92;&quot;y&#92;&quot;:118,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u6c34&#92;&quot;,&#92;&quot;soldout&#92;&quot;:0,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u767d&#92;&#92;u8eab&#92;&#92;u9b5a&#92;&#92;u5510&#92;&#92;u63da&#92;&#92;u3052&#92;&#92;u91ce&#92;&#92;u83dc&#92;&#92;u3042&#92;&#92;u3093&#92;&quot;,&#92;&quot;kcal&#92;&quot;:404.4096385542169,&#92;&quot;remarks&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;event&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;payday&#92;&quot;:0.0,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:0.0,&#92;&quot;temperature&#92;&quot;:15.5,&#92;&quot;month&#92;&quot;:11,&#92;&quot;day&#92;&quot;:20},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-21&#92;&quot;,&#92;&quot;y&#92;&quot;:120,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u6728&#92;&quot;,&#92;&quot;soldout&#92;&quot;:1,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u82e5&#92;&#92;u9d8f&#92;&#92;u30d4&#92;&#92;u30ea&#92;&#92;u8f9b&#92;&#92;u713c&#92;&quot;,&#92;&quot;kcal&#92;&quot;:404.4096385542169,&#92;&quot;remarks&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;event&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;payday&#92;&quot;:0.0,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:0.0,&#92;&quot;temperature&#92;&quot;:15.2,&#92;&quot;month&#92;&quot;:11,&#92;&quot;day&#92;&quot;:21},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-22&#92;&quot;,&#92;&quot;y&#92;&quot;:130,&#92;&quot;week&#92;&quot;:&#92;&quot;&#92;&#92;u91d1&#92;&quot;,&#92;&quot;soldout&#92;&quot;:1,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u30d3&#92;&#92;u30c3&#92;&#92;u30b0&#92;&#92;u30e1&#92;&#92;u30f3&#92;&#92;u30c1&#92;&#92;u30ab&#92;&#92;u30c4&#92;&quot;,&#92;&quot;kcal&#92;&quot;:404.4096385542169,&#92;&quot;remarks&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;event&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;payday&#92;&quot;:0.0,&#92;&quot;weather&#92;&quot;:&#92;&quot;&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;,&#92;&quot;precipitation&#92;&quot;:0.0,&#92;&quot;temperature&#92;&quot;:16.1,&#92;&quot;month&#92;&quot;:11,&#92;&quot;day&#92;&quot;:22}]&quot;' data-total-rows='5' data-total-columns='14' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;datetime&quot;,[&quot;date&quot;,&quot;date&quot;]],[&quot;y&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;week&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;soldout&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;name&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;kcal&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;remarks&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;event&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;payday&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;weather&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;precipitation&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;temperature&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;month&quot;,[&quot;integer&quot;,&quot;i8&quot;]],[&quot;day&quot;,[&quot;integer&quot;,&quot;i8&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "24fc7fc69b33a25e914d6c46c5727477",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"categorical-variables-encoded\">Categorical Variables Encoded</h2></span><marimo-ui-element object-id='ROlb-0' random-id='4d20b5a7-96cc-b9b4-72fd-688621dd704c'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-18&#92;&quot;,&#92;&quot;y&#92;&quot;:90,&#92;&quot;week_&#92;&#92;u6708&#92;&quot;:1,&#92;&quot;week_&#92;&#92;u6728&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u6c34&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u706b&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u91d1&#92;&quot;:0,&#92;&quot;soldout&#92;&quot;:0,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u539a&#92;&#92;u5207&#92;&#92;u308a&#92;&#92;u30a4&#92;&#92;u30ab&#92;&#92;u30d5&#92;&#92;u30e9&#92;&#92;u30a4&#92;&quot;,&#92;&quot;kcal&#92;&quot;:404.4096385542169,&#92;&quot;remarks&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;event&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;payday&#92;&quot;:0.0,&#92;&quot;weather_&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;:1,&#92;&quot;weather_&#92;&#92;u6674&#92;&#92;u308c&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u66c7&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u8584&#92;&#92;u66c7&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96e8&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96ea&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96f7&#92;&#92;u96fb&#92;&quot;:0,&#92;&quot;precipitation&#92;&quot;:0.0,&#92;&quot;temperature&#92;&quot;:19.8,&#92;&quot;month&#92;&quot;:11,&#92;&quot;day&#92;&quot;:18},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-19&#92;&quot;,&#92;&quot;y&#92;&quot;:101,&#92;&quot;week_&#92;&#92;u6708&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u6728&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u6c34&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u706b&#92;&quot;:1,&#92;&quot;week_&#92;&#92;u91d1&#92;&quot;:0,&#92;&quot;soldout&#92;&quot;:1,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u624b&#92;&#92;u4f5c&#92;&#92;u308a&#92;&#92;u30d2&#92;&#92;u30ec&#92;&#92;u30ab&#92;&#92;u30c4&#92;&quot;,&#92;&quot;kcal&#92;&quot;:404.4096385542169,&#92;&quot;remarks&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;event&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;payday&#92;&quot;:0.0,&#92;&quot;weather_&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;:1,&#92;&quot;weather_&#92;&#92;u6674&#92;&#92;u308c&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u66c7&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u8584&#92;&#92;u66c7&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96e8&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96ea&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96f7&#92;&#92;u96fb&#92;&quot;:0,&#92;&quot;precipitation&#92;&quot;:0.0,&#92;&quot;temperature&#92;&quot;:17.0,&#92;&quot;month&#92;&quot;:11,&#92;&quot;day&#92;&quot;:19},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-20&#92;&quot;,&#92;&quot;y&#92;&quot;:118,&#92;&quot;week_&#92;&#92;u6708&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u6728&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u6c34&#92;&quot;:1,&#92;&quot;week_&#92;&#92;u706b&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u91d1&#92;&quot;:0,&#92;&quot;soldout&#92;&quot;:0,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u767d&#92;&#92;u8eab&#92;&#92;u9b5a&#92;&#92;u5510&#92;&#92;u63da&#92;&#92;u3052&#92;&#92;u91ce&#92;&#92;u83dc&#92;&#92;u3042&#92;&#92;u3093&#92;&quot;,&#92;&quot;kcal&#92;&quot;:404.4096385542169,&#92;&quot;remarks&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;event&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;payday&#92;&quot;:0.0,&#92;&quot;weather_&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;:1,&#92;&quot;weather_&#92;&#92;u6674&#92;&#92;u308c&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u66c7&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u8584&#92;&#92;u66c7&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96e8&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96ea&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96f7&#92;&#92;u96fb&#92;&quot;:0,&#92;&quot;precipitation&#92;&quot;:0.0,&#92;&quot;temperature&#92;&quot;:15.5,&#92;&quot;month&#92;&quot;:11,&#92;&quot;day&#92;&quot;:20},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-21&#92;&quot;,&#92;&quot;y&#92;&quot;:120,&#92;&quot;week_&#92;&#92;u6708&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u6728&#92;&quot;:1,&#92;&quot;week_&#92;&#92;u6c34&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u706b&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u91d1&#92;&quot;:0,&#92;&quot;soldout&#92;&quot;:1,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u82e5&#92;&#92;u9d8f&#92;&#92;u30d4&#92;&#92;u30ea&#92;&#92;u8f9b&#92;&#92;u713c&#92;&quot;,&#92;&quot;kcal&#92;&quot;:404.4096385542169,&#92;&quot;remarks&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;event&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;payday&#92;&quot;:0.0,&#92;&quot;weather_&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;:1,&#92;&quot;weather_&#92;&#92;u6674&#92;&#92;u308c&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u66c7&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u8584&#92;&#92;u66c7&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96e8&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96ea&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96f7&#92;&#92;u96fb&#92;&quot;:0,&#92;&quot;precipitation&#92;&quot;:0.0,&#92;&quot;temperature&#92;&quot;:15.2,&#92;&quot;month&#92;&quot;:11,&#92;&quot;day&#92;&quot;:21},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-22&#92;&quot;,&#92;&quot;y&#92;&quot;:130,&#92;&quot;week_&#92;&#92;u6708&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u6728&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u6c34&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u706b&#92;&quot;:0,&#92;&quot;week_&#92;&#92;u91d1&#92;&quot;:1,&#92;&quot;soldout&#92;&quot;:1,&#92;&quot;name&#92;&quot;:&#92;&quot;&#92;&#92;u30d3&#92;&#92;u30c3&#92;&#92;u30b0&#92;&#92;u30e1&#92;&#92;u30f3&#92;&#92;u30c1&#92;&#92;u30ab&#92;&#92;u30c4&#92;&quot;,&#92;&quot;kcal&#92;&quot;:404.4096385542169,&#92;&quot;remarks&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;event&#92;&quot;:&#92;&quot;None&#92;&quot;,&#92;&quot;payday&#92;&quot;:0.0,&#92;&quot;weather_&#92;&#92;u5feb&#92;&#92;u6674&#92;&quot;:1,&#92;&quot;weather_&#92;&#92;u6674&#92;&#92;u308c&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u66c7&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u8584&#92;&#92;u66c7&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96e8&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96ea&#92;&quot;:0,&#92;&quot;weather_&#92;&#92;u96f7&#92;&#92;u96fb&#92;&quot;:0,&#92;&quot;precipitation&#92;&quot;:0.0,&#92;&quot;temperature&#92;&quot;:16.1,&#92;&quot;month&#92;&quot;:11,&#92;&quot;day&#92;&quot;:22}]&quot;' data-total-rows='5' data-total-columns='24' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;datetime&quot;,[&quot;date&quot;,&quot;date&quot;]],[&quot;y&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;week_\u6708&quot;,[&quot;integer&quot;,&quot;u8&quot;]],[&quot;week_\u6728&quot;,[&quot;integer&quot;,&quot;u8&quot;]],[&quot;week_\u6c34&quot;,[&quot;integer&quot;,&quot;u8&quot;]],[&quot;week_\u706b&quot;,[&quot;integer&quot;,&quot;u8&quot;]],[&quot;week_\u91d1&quot;,[&quot;integer&quot;,&quot;u8&quot;]],[&quot;soldout&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;name&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;kcal&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;remarks&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;event&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;payday&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;weather_\u5feb\u6674&quot;,[&quot;integer&quot;,&quot;u8&quot;]],[&quot;weather_\u6674\u308c&quot;,[&quot;integer&quot;,&quot;u8&quot;]],[&quot;weather_\u66c7&quot;,[&quot;integer&quot;,&quot;u8&quot;]],[&quot;weather_\u8584\u66c7&quot;,[&quot;integer&quot;,&quot;u8&quot;]],[&quot;weather_\u96e8&quot;,[&quot;integer&quot;,&quot;u8&quot;]],[&quot;weather_\u96ea&quot;,[&quot;integer&quot;,&quot;u8&quot;]],[&quot;weather_\u96f7\u96fb&quot;,[&quot;integer&quot;,&quot;u8&quot;]],[&quot;precipitation&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;temperature&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;month&quot;,[&quot;integer&quot;,&quot;i8&quot;]],[&quot;day&quot;,[&quot;integer&quot;,&quot;i8&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "ea0692b040934d6873a188f52c14f03c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"enhanced-features-added\">Enhanced Features Added</h2></span><marimo-ui-element object-id='qnkX-0' random-id='65c21c2b-1eea-1c86-5298-5681d50743ca'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-18&#92;&quot;,&#92;&quot;y&#92;&quot;:90,&#92;&quot;payday_flag&#92;&quot;:0,&#92;&quot;is_curry&#92;&quot;:0,&#92;&quot;is_fun_menu&#92;&quot;:0},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-19&#92;&quot;,&#92;&quot;y&#92;&quot;:101,&#92;&quot;payday_flag&#92;&quot;:0,&#92;&quot;is_curry&#92;&quot;:0,&#92;&quot;is_fun_menu&#92;&quot;:0},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-20&#92;&quot;,&#92;&quot;y&#92;&quot;:118,&#92;&quot;payday_flag&#92;&quot;:0,&#92;&quot;is_curry&#92;&quot;:0,&#92;&quot;is_fun_menu&#92;&quot;:0},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-21&#92;&quot;,&#92;&quot;y&#92;&quot;:120,&#92;&quot;payday_flag&#92;&quot;:0,&#92;&quot;is_curry&#92;&quot;:0,&#92;&quot;is_fun_menu&#92;&quot;:0},{&#92;&quot;datetime&#92;&quot;:&#92;&quot;2013-11-22&#92;&quot;,&#92;&quot;y&#92;&quot;:130,&#92;&quot;payday_flag&#92;&quot;:0,&#92;&quot;is_curry&#92;&quot;:0,&#92;&quot;is_fun_menu&#92;&quot;:0}]&quot;' data-total-rows='5' data-total-columns='5' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;datetime&quot;,[&quot;date&quot;,&quot;date&quot;]],[&quot;y&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;payday_flag&quot;,[&quot;integer&quot;,&quot;i32&quot;]],[&quot;is_curry&quot;,[&quot;integer&quot;,&quot;i32&quot;]],[&quot;is_fun_menu&quot;,[&quot;integer&quot;,&quot;i32&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "2192175cdd5e76f102ee3b477b9dc1c7",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "pa.Table requires 'pyarrow' module to be installed",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/h_/x1cy3r8n503g3kl8zr7cg4qr0000gn/T/marimo_65959/__marimo__cell_TqIu_.py&quot;</span>, line <span class=\"m\">5</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">X</span> <span class=\"o\">=</span> <span class=\"n\">train_enhanced</span><span class=\"o\">.</span><span class=\"n\">select</span><span class=\"p\">(</span><span class=\"n\">_features</span><span class=\"p\">)</span><span class=\"o\">.</span><span class=\"n\">to_pandas</span><span class=\"p\">()</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/dataframe/frame.py&quot;</span>, line <span class=\"m\">2573</span>, in <span class=\"n\">to_pandas</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_to_pandas_without_object_columns</span><span class=\"p\">(</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^</span>\n<span class=\"w\">    </span>    <span class=\"bp\">self</span><span class=\"p\">,</span> <span class=\"n\">use_pyarrow_extension_array</span><span class=\"o\">=</span><span class=\"n\">use_pyarrow_extension_array</span><span class=\"p\">,</span> <span class=\"o\">**</span><span class=\"n\">kwargs</span>\n<span class=\"w\">        </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n<span class=\"w\">    </span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/dataframe/frame.py&quot;</span>, line <span class=\"m\">2625</span>, in <span class=\"n\">_to_pandas_without_object_columns</span>\n<span class=\"w\">    </span><span class=\"n\">tbl</span> <span class=\"o\">=</span> <span class=\"n\">pa</span><span class=\"o\">.</span><span class=\"n\">Table</span><span class=\"o\">.</span><span class=\"n\">from_batches</span><span class=\"p\">(</span><span class=\"n\">record_batches</span><span class=\"p\">)</span>\n<span class=\"w\">          </span><span class=\"pm\">^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/_dependencies.py&quot;</span>, line <span class=\"m\">104</span>, in <span class=\"n\">__getattr__</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"ne\">ModuleNotFoundError</span><span class=\"p\">(</span><span class=\"n\">msg</span><span class=\"p\">)</span> <span class=\"kn\">from</span><span class=\"w\"> </span><span class=\"kc\">None</span>\n<span class=\"gr\">ModuleNotFoundError</span>: <span class=\"n\">pa.Table requires &#39;pyarrow&#39; module to be installed</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "3bb3a0e3327079f03eb078351ad2deed",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"diagnostic-statistics-of-y\">Diagnostic: Statistics of y</h2></span><marimo-ui-element object-id='Vxnm-0' random-id='54651f33-d727-a443-d619-edd860e61fdf'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;statistic&#92;&quot;:&#92;&quot;count&#92;&quot;,&#92;&quot;y&#92;&quot;:207.0},{&#92;&quot;statistic&#92;&quot;:&#92;&quot;null_count&#92;&quot;,&#92;&quot;y&#92;&quot;:0.0},{&#92;&quot;statistic&#92;&quot;:&#92;&quot;mean&#92;&quot;,&#92;&quot;y&#92;&quot;:86.6231884057971},{&#92;&quot;statistic&#92;&quot;:&#92;&quot;std&#92;&quot;,&#92;&quot;y&#92;&quot;:32.882447932259076},{&#92;&quot;statistic&#92;&quot;:&#92;&quot;min&#92;&quot;,&#92;&quot;y&#92;&quot;:29.0},{&#92;&quot;statistic&#92;&quot;:&#92;&quot;25%&#92;&quot;,&#92;&quot;y&#92;&quot;:57.0},{&#92;&quot;statistic&#92;&quot;:&#92;&quot;50%&#92;&quot;,&#92;&quot;y&#92;&quot;:78.0},{&#92;&quot;statistic&#92;&quot;:&#92;&quot;75%&#92;&quot;,&#92;&quot;y&#92;&quot;:113.0},{&#92;&quot;statistic&#92;&quot;:&#92;&quot;max&#92;&quot;,&#92;&quot;y&#92;&quot;:171.0}]&quot;' data-total-rows='9' data-total-columns='2' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;statistic&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;y&quot;,[&quot;number&quot;,&quot;f64&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "6e396f65ac4e074514b0620f792a5f56",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "pa.Table requires 'pyarrow' module to be installed",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/h_/x1cy3r8n503g3kl8zr7cg4qr0000gn/T/marimo_65959/__marimo__cell_DnEU_.py&quot;</span>, line <span class=\"m\">6</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">_corr</span> <span class=\"o\">=</span> <span class=\"n\">_numeric</span><span class=\"o\">.</span><span class=\"n\">to_pandas</span><span class=\"p\">()</span><span class=\"o\">.</span><span class=\"n\">corr</span><span class=\"p\">()[</span><span class=\"s2\">&quot;y&quot;</span><span class=\"p\">]</span><span class=\"o\">.</span><span class=\"n\">reset_index</span><span class=\"p\">()</span>\n<span class=\"w\">            </span><span class=\"pm\">~~~~~~~~~~~~~~~~~~^^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/dataframe/frame.py&quot;</span>, line <span class=\"m\">2573</span>, in <span class=\"n\">to_pandas</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_to_pandas_without_object_columns</span><span class=\"p\">(</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^</span>\n<span class=\"w\">    </span>    <span class=\"bp\">self</span><span class=\"p\">,</span> <span class=\"n\">use_pyarrow_extension_array</span><span class=\"o\">=</span><span class=\"n\">use_pyarrow_extension_array</span><span class=\"p\">,</span> <span class=\"o\">**</span><span class=\"n\">kwargs</span>\n<span class=\"w\">        </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n<span class=\"w\">    </span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/dataframe/frame.py&quot;</span>, line <span class=\"m\">2625</span>, in <span class=\"n\">_to_pandas_without_object_columns</span>\n<span class=\"w\">    </span><span class=\"n\">tbl</span> <span class=\"o\">=</span> <span class=\"n\">pa</span><span class=\"o\">.</span><span class=\"n\">Table</span><span class=\"o\">.</span><span class=\"n\">from_batches</span><span class=\"p\">(</span><span class=\"n\">record_batches</span><span class=\"p\">)</span>\n<span class=\"w\">          </span><span class=\"pm\">^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/_dependencies.py&quot;</span>, line <span class=\"m\">104</span>, in <span class=\"n\">__getattr__</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"ne\">ModuleNotFoundError</span><span class=\"p\">(</span><span class=\"n\">msg</span><span class=\"p\">)</span> <span class=\"kn\">from</span><span class=\"w\"> </span><span class=\"kc\">None</span>\n<span class=\"gr\">ModuleNotFoundError</span>: <span class=\"n\">pa.Table requires &#39;pyarrow&#39; module to be installed</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "c956d0ba9accb8ae9a9fd02e2ec7a9c5",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "pa.Table requires 'pyarrow' module to be installed",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/h_/x1cy3r8n503g3kl8zr7cg4qr0000gn/T/marimo_65959/__marimo__cell_ulZA_.py&quot;</span>, line <span class=\"m\">6</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">_chart</span> <span class=\"o\">=</span> <span class=\"n\">alt</span><span class=\"o\">.</span><span class=\"n\">Chart</span><span class=\"p\">(</span><span class=\"n\">_monthly_avg</span><span class=\"o\">.</span><span class=\"n\">to_pandas</span><span class=\"p\">())</span><span class=\"o\">.</span><span class=\"n\">mark_line</span><span class=\"p\">(</span><span class=\"n\">point</span><span class=\"o\">=</span><span class=\"kc\">True</span><span class=\"p\">)</span><span class=\"o\">.</span><span class=\"n\">encode</span><span class=\"p\">(</span>\n<span class=\"w\">                       </span><span class=\"pm\">~~~~~~~~~~~~~~~~~~~~~~^^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/dataframe/frame.py&quot;</span>, line <span class=\"m\">2573</span>, in <span class=\"n\">to_pandas</span>\n<span class=\"w\">    </span><span class=\"k\">return</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_to_pandas_without_object_columns</span><span class=\"p\">(</span>\n<span class=\"w\">           </span><span class=\"pm\">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^</span>\n<span class=\"w\">    </span>    <span class=\"bp\">self</span><span class=\"p\">,</span> <span class=\"n\">use_pyarrow_extension_array</span><span class=\"o\">=</span><span class=\"n\">use_pyarrow_extension_array</span><span class=\"p\">,</span> <span class=\"o\">**</span><span class=\"n\">kwargs</span>\n<span class=\"w\">        </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n<span class=\"w\">    </span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/dataframe/frame.py&quot;</span>, line <span class=\"m\">2625</span>, in <span class=\"n\">_to_pandas_without_object_columns</span>\n<span class=\"w\">    </span><span class=\"n\">tbl</span> <span class=\"o\">=</span> <span class=\"n\">pa</span><span class=\"o\">.</span><span class=\"n\">Table</span><span class=\"o\">.</span><span class=\"n\">from_batches</span><span class=\"p\">(</span><span class=\"n\">record_batches</span><span class=\"p\">)</span>\n<span class=\"w\">          </span><span class=\"pm\">^^^^^^^^</span>\n  File <span class=\"nb\">&quot;/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento4_gemini_conductor/.venv/lib/python3.13/site-packages/polars/_dependencies.py&quot;</span>, line <span class=\"m\">104</span>, in <span class=\"n\">__getattr__</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"ne\">ModuleNotFoundError</span><span class=\"p\">(</span><span class=\"n\">msg</span><span class=\"p\">)</span> <span class=\"kn\">from</span><span class=\"w\"> </span><span class=\"kc\">None</span>\n<span class=\"gr\">ModuleNotFoundError</span>: <span class=\"n\">pa.Table requires &#39;pyarrow&#39; module to be installed</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    }
+  ]
+}

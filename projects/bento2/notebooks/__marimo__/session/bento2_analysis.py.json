@@ -1,0 +1,1580 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.19.1"
+  },
+  "cells": [
+    {
+      "id": "lEQa",
+      "code_hash": "002414f6f5e7be82e80d23fff37b6983",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"2-1-rmse-13\">2. \u30d5\u30a7\u30fc\u30ba 1: \u30b7\u30f3\u30d7\u30eb\u30d9\u30fc\u30b9\u30e9\u30a4\u30f3 (RMSE 13\u76ee\u6a19)</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "1c9b177985e97214b6b906ef218f5dc3",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"3-2-rmse-11\">3. \u30d5\u30a7\u30fc\u30ba 2: \u7279\u5fb4\u91cf\u5b9f\u9a13 (RMSE 11\u76ee\u6a19)</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "8e686ee269857bec6ab876f65b64d5ac",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"4-3-randomforest\">4. \u30d5\u30a7\u30fc\u30ba 3: \u9ad8\u5ea6\u306a\u30e2\u30c7\u30eb (RandomForest + \u30e9\u30b0\u7279\u5fb4\u91cf)</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "d78e2be49c545e62c733e8222c7ed99c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"5\">5. \u4e88\u6e2c\u3068\u63d0\u51fa\u30d5\u30a1\u30a4\u30eb\u306e\u751f\u6210</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "0de6a3c5f87999e8fad69909e997773a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"4-4\">4. \u4e88\u6e2c\u3068\u63d0\u51fa\u30d5\u30a1\u30a4\u30eb\u306e\u751f\u6210 (\u30d5\u30a7\u30fc\u30ba 4 \u30a2\u30eb\u30c6\u30a3\u30e1\u30c3\u30c8)</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "63825d08bfcbba42e6bfecc24d466f36",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"5-5\">5. \u4e88\u6e2c\u3068\u63d0\u51fa\u30d5\u30a1\u30a4\u30eb\u306e\u751f\u6210 (\u30d5\u30a7\u30fc\u30ba 5 \u8d77\u6b7b\u56de\u751f)</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Hbol",
+      "code_hash": "a83f2d082d27f3ea93a271a0fa86a1ca",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "6ce32f1bd19e54a992e5f7a123e5b657",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">\u8a13\u7df4\u30c7\u30fc\u30bf\u30b5\u30a4\u30ba: (207, 12)</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "77965fa1166e955fc96aeb07f0952e9c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"_1\">\u6b20\u640d\u5024\u304c\u3042\u308b\u30ab\u30e9\u30e0</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "60283e46c58b457f1171b24884129c19",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='bkHC-0' random-id='f6bb4876-4348-9722-abba-6ce41c6b2b3c'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;&#92;&#92;u30ab&#92;&#92;u30e9&#92;&#92;u30e0&#92;&quot;:&#92;&quot;kcal&#92;&quot;,&#92;&quot;&#92;&#92;u6b20&#92;&#92;u640d&#92;&#92;u6570&#92;&quot;:41,&#92;&quot;&#92;&#92;u6b20&#92;&#92;u640d&#92;&#92;u7387(%)&#92;&quot;:19.81},{&#92;&quot;&#92;&#92;u30ab&#92;&#92;u30e9&#92;&#92;u30e0&#92;&quot;:&#92;&quot;remarks&#92;&quot;,&#92;&quot;&#92;&#92;u6b20&#92;&#92;u640d&#92;&#92;u6570&#92;&quot;:186,&#92;&quot;&#92;&#92;u6b20&#92;&#92;u640d&#92;&#92;u7387(%)&#92;&quot;:89.86},{&#92;&quot;&#92;&#92;u30ab&#92;&#92;u30e9&#92;&#92;u30e0&#92;&quot;:&#92;&quot;event&#92;&quot;,&#92;&quot;&#92;&#92;u6b20&#92;&#92;u640d&#92;&#92;u6570&#92;&quot;:193,&#92;&quot;&#92;&#92;u6b20&#92;&#92;u640d&#92;&#92;u7387(%)&#92;&quot;:93.24},{&#92;&quot;&#92;&#92;u30ab&#92;&#92;u30e9&#92;&#92;u30e0&#92;&quot;:&#92;&quot;payday&#92;&quot;,&#92;&quot;&#92;&#92;u6b20&#92;&#92;u640d&#92;&#92;u6570&#92;&quot;:197,&#92;&quot;&#92;&#92;u6b20&#92;&#92;u640d&#92;&#92;u7387(%)&#92;&quot;:95.17}]&quot;' data-total-rows='4' data-total-columns='3' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;\u30ab\u30e9\u30e0&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;\u6b20\u640d\u6570&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;\u6b20\u640d\u7387(%)&quot;,[&quot;number&quot;,&quot;f64&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "2bec193fa0d1e62931348f90dafa2e75",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "82ff8f44740bd570e3292cdd7187d2d3",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "5ab84e22df89888bae42a5c87f89bd77",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"1-ridge-cv-rmse-227740\">\u30d5\u30a7\u30fc\u30ba1 (Ridge) CV RMSE: 22.7740</h3></span>"
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Phase 1 (Ridge) Mean CV RMSE: 22.7740\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "4b1409daea55f4c0d67d3caf1a31ab4e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "cfcadec2a081d174713c74fbcd3d9b8a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "7d8058dd85e31f0dd1f4f012914aa588",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"2-ridge-cv-rmse-209343\">\u30d5\u30a7\u30fc\u30ba2 (Ridge) CV RMSE: 20.9343</h3></span>"
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Phase 2 (Ridge) Mean CV RMSE: 20.9343\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "12c66a0dde464e04baf58cd94258f748",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"3-randomforest-cv-rmse-194890\">\u30d5\u30a7\u30fc\u30ba3 (RandomForest) CV RMSE: 19.4890</h3></span>"
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Phase 3 (RF) Mean CV RMSE: 19.4890\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "ba82e797f5437ed16449a657b26a675b",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "fb5c24432a09fd03aa30e006868d2aca",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "5ac8fc4f5aec824d0cb64b9f01c59933",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "[I 2026-01-11 11:26:41,112] A new study created in memory with name: no-name-2cb96b1a-e78c-47a1-b9ac-df3d5afa8f20\n\r  0%|                                                           | 0/50 [00:00<?, ?it/s]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:26:43,851] Trial 0 finished with value: 23.65178932688953 and parameters: {'learning_rate': 0.019341955090330397, 'max_iter': 788, 'max_depth': 8, 'l2_regularization': 0.00013424429178839227}. Best is trial 0 with value: 23.65178932688953.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  0%|                                                           | 0/50 [00:02<?, ?it/s]\rBest trial: 0. Best value: 23.6518:   0%|                       | 0/50 [00:02<?, ?it/s]\rBest trial: 0. Best value: 23.6518:   2%|\u258e              | 1/50 [00:02<02:13,  2.73s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:26:46,947] Trial 1 finished with value: 23.08146758285331 and parameters: {'learning_rate': 0.039068679518120715, 'max_iter': 821, 'max_depth': 6, 'l2_regularization': 0.0002146851303434298}. Best is trial 1 with value: 23.08146758285331.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 0. Best value: 23.6518:   2%|\u258e              | 1/50 [00:05<02:13,  2.73s/it]\rBest trial: 1. Best value: 23.0815:   2%|\u258e              | 1/50 [00:05<02:13,  2.73s/it]\rBest trial: 1. Best value: 23.0815:   4%|\u258c              | 2/50 [00:05<02:21,  2.94s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:26:49,934] Trial 2 finished with value: 23.76959947198604 and parameters: {'learning_rate': 0.04579990761596502, 'max_iter': 269, 'max_depth': 9, 'l2_regularization': 0.0006251222156458174}. Best is trial 1 with value: 23.08146758285331.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 1. Best value: 23.0815:   4%|\u258c              | 2/50 [00:08<02:21,  2.94s/it]\rBest trial: 1. Best value: 23.0815:   4%|\u258c              | 2/50 [00:08<02:21,  2.94s/it]\rBest trial: 1. Best value: 23.0815:   6%|\u2589              | 3/50 [00:08<02:19,  2.96s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:26:51,624] Trial 3 finished with value: 24.606322244838598 and parameters: {'learning_rate': 0.011743714776184059, 'max_iter': 317, 'max_depth': 10, 'l2_regularization': 0.00015347781899045044}. Best is trial 1 with value: 23.08146758285331.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 1. Best value: 23.0815:   6%|\u2589              | 3/50 [00:10<02:19,  2.96s/it]\rBest trial: 1. Best value: 23.0815:   6%|\u2589              | 3/50 [00:10<02:19,  2.96s/it]\rBest trial: 1. Best value: 23.0815:   8%|\u2588\u258f             | 4/50 [00:10<01:53,  2.46s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:26:57,009] Trial 4 finished with value: 23.02051278747924 and parameters: {'learning_rate': 0.05740546082575278, 'max_iter': 829, 'max_depth': 9, 'l2_regularization': 0.007626309585995878}. Best is trial 4 with value: 23.02051278747924.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 1. Best value: 23.0815:   8%|\u2588\u258f             | 4/50 [00:15<01:53,  2.46s/it]\rBest trial: 4. Best value: 23.0205:   8%|\u2588\u258f             | 4/50 [00:15<01:53,  2.46s/it]\rBest trial: 4. Best value: 23.0205:  10%|\u2588\u258c             | 5/50 [00:15<02:38,  3.51s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:01,546] Trial 5 finished with value: 24.05346658331872 and parameters: {'learning_rate': 0.010478338655281638, 'max_iter': 504, 'max_depth': 10, 'l2_regularization': 0.005694286684552152}. Best is trial 4 with value: 23.02051278747924.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 4. Best value: 23.0205:  10%|\u2588\u258c             | 5/50 [00:20<02:38,  3.51s/it]\rBest trial: 4. Best value: 23.0205:  10%|\u2588\u258c             | 5/50 [00:20<02:38,  3.51s/it]\rBest trial: 4. Best value: 23.0205:  12%|\u2588\u258a             | 6/50 [00:20<02:49,  3.86s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:06,088] Trial 6 finished with value: 23.088971743581546 and parameters: {'learning_rate': 0.10069080102796064, 'max_iter': 785, 'max_depth': 10, 'l2_regularization': 0.011346491656831662}. Best is trial 4 with value: 23.02051278747924.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 4. Best value: 23.0205:  12%|\u2588\u258a             | 6/50 [00:24<02:49,  3.86s/it]\rBest trial: 4. Best value: 23.0205:  12%|\u2588\u258a             | 6/50 [00:24<02:49,  3.86s/it]\rBest trial: 4. Best value: 23.0205:  14%|\u2588\u2588             | 7/50 [00:24<02:55,  4.08s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:08,355] Trial 7 finished with value: 23.022594746929336 and parameters: {'learning_rate': 0.049244563981935954, 'max_iter': 773, 'max_depth': 4, 'l2_regularization': 0.03340680247624305}. Best is trial 4 with value: 23.02051278747924.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 4. Best value: 23.0205:  14%|\u2588\u2588             | 7/50 [00:27<02:55,  4.08s/it]\rBest trial: 4. Best value: 23.0205:  14%|\u2588\u2588             | 7/50 [00:27<02:55,  4.08s/it]\rBest trial: 4. Best value: 23.0205:  16%|\u2588\u2588\u258d            | 8/50 [00:27<02:27,  3.51s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:09,692] Trial 8 finished with value: 24.041288584441112 and parameters: {'learning_rate': 0.01709740955631321, 'max_iter': 316, 'max_depth': 10, 'l2_regularization': 0.0181311242854552}. Best is trial 4 with value: 23.02051278747924.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 4. Best value: 23.0205:  16%|\u2588\u2588\u258d            | 8/50 [00:28<02:27,  3.51s/it]\rBest trial: 4. Best value: 23.0205:  16%|\u2588\u2588\u258d            | 8/50 [00:28<02:27,  3.51s/it]\rBest trial: 4. Best value: 23.0205:  18%|\u2588\u2588\u258b            | 9/50 [00:28<01:55,  2.83s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:13,088] Trial 9 finished with value: 23.73749485242964 and parameters: {'learning_rate': 0.01654043522044128, 'max_iter': 579, 'max_depth': 3, 'l2_regularization': 0.00012986924437029303}. Best is trial 4 with value: 23.02051278747924.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 4. Best value: 23.0205:  18%|\u2588\u2588\u258b            | 9/50 [00:31<01:55,  2.83s/it]\rBest trial: 4. Best value: 23.0205:  18%|\u2588\u2588\u258b            | 9/50 [00:31<01:55,  2.83s/it]\rBest trial: 4. Best value: 23.0205:  20%|\u2588\u2588\u258a           | 10/50 [00:31<02:00,  3.00s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:17,506] Trial 10 finished with value: 22.97419135484323 and parameters: {'learning_rate': 0.17573717374006984, 'max_iter': 990, 'max_depth': 7, 'l2_regularization': 0.5398822876135616}. Best is trial 10 with value: 22.97419135484323.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 4. Best value: 23.0205:  20%|\u2588\u2588\u258a           | 10/50 [00:36<02:00,  3.00s/it]\rBest trial: 10. Best value: 22.9742:  20%|\u2588\u2588\u258c          | 10/50 [00:36<02:00,  3.00s/it]\rBest trial: 10. Best value: 22.9742:  22%|\u2588\u2588\u258a          | 11/50 [00:36<02:14,  3.44s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:22,074] Trial 11 finished with value: 23.155862083980224 and parameters: {'learning_rate': 0.16283942120154507, 'max_iter': 998, 'max_depth': 7, 'l2_regularization': 0.9973660853793139}. Best is trial 10 with value: 22.97419135484323.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 10. Best value: 22.9742:  22%|\u2588\u2588\u258a          | 11/50 [00:40<02:14,  3.44s/it]\rBest trial: 10. Best value: 22.9742:  22%|\u2588\u2588\u258a          | 11/50 [00:40<02:14,  3.44s/it]\rBest trial: 10. Best value: 22.9742:  24%|\u2588\u2588\u2588          | 12/50 [00:40<02:23,  3.78s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:26,513] Trial 12 finished with value: 22.990772985074294 and parameters: {'learning_rate': 0.18251964116185937, 'max_iter': 958, 'max_depth': 6, 'l2_regularization': 0.29980036896344137}. Best is trial 10 with value: 22.97419135484323.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 10. Best value: 22.9742:  24%|\u2588\u2588\u2588          | 12/50 [00:45<02:23,  3.78s/it]\rBest trial: 10. Best value: 22.9742:  24%|\u2588\u2588\u2588          | 12/50 [00:45<02:23,  3.78s/it]\rBest trial: 10. Best value: 22.9742:  26%|\u2588\u2588\u2588\u258d         | 13/50 [00:45<02:27,  3.98s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:30,082] Trial 13 finished with value: 23.12712067324217 and parameters: {'learning_rate': 0.18828370384865692, 'max_iter': 962, 'max_depth': 6, 'l2_regularization': 0.7935601279811353}. Best is trial 10 with value: 22.97419135484323.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 10. Best value: 22.9742:  26%|\u2588\u2588\u2588\u258d         | 13/50 [00:48<02:27,  3.98s/it]\rBest trial: 10. Best value: 22.9742:  26%|\u2588\u2588\u2588\u258d         | 13/50 [00:48<02:27,  3.98s/it]\rBest trial: 10. Best value: 22.9742:  28%|\u2588\u2588\u2588\u258b         | 14/50 [00:48<02:18,  3.86s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:30,742] Trial 14 finished with value: 23.62891868011227 and parameters: {'learning_rate': 0.10626447014933676, 'max_iter': 117, 'max_depth': 5, 'l2_regularization': 0.16304484748675763}. Best is trial 10 with value: 22.97419135484323.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 10. Best value: 22.9742:  28%|\u2588\u2588\u2588\u258b         | 14/50 [00:49<02:18,  3.86s/it]\rBest trial: 10. Best value: 22.9742:  28%|\u2588\u2588\u2588\u258b         | 14/50 [00:49<02:18,  3.86s/it]\rBest trial: 10. Best value: 22.9742:  30%|\u2588\u2588\u2588\u2589         | 15/50 [00:49<01:41,  2.89s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:33,277] Trial 15 finished with value: 23.018124447823 and parameters: {'learning_rate': 0.11690380284521759, 'max_iter': 636, 'max_depth': 7, 'l2_regularization': 0.1661823735620083}. Best is trial 10 with value: 22.97419135484323.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 10. Best value: 22.9742:  30%|\u2588\u2588\u2588\u2589         | 15/50 [00:52<01:41,  2.89s/it]\rBest trial: 10. Best value: 22.9742:  30%|\u2588\u2588\u2588\u2589         | 15/50 [00:52<01:41,  2.89s/it]\rBest trial: 10. Best value: 22.9742:  32%|\u2588\u2588\u2588\u2588\u258f        | 16/50 [00:52<01:34,  2.79s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:37,151] Trial 16 finished with value: 22.960529687829247 and parameters: {'learning_rate': 0.0739592536023401, 'max_iter': 928, 'max_depth': 5, 'l2_regularization': 0.19864593841584083}. Best is trial 16 with value: 22.960529687829247.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 10. Best value: 22.9742:  32%|\u2588\u2588\u2588\u2588\u258f        | 16/50 [00:56<01:34,  2.79s/it]\rBest trial: 16. Best value: 22.9605:  32%|\u2588\u2588\u2588\u2588\u258f        | 16/50 [00:56<01:34,  2.79s/it]\rBest trial: 16. Best value: 22.9605:  34%|\u2588\u2588\u2588\u2588\u258d        | 17/50 [00:56<01:42,  3.11s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:39,739] Trial 17 finished with value: 22.847894027660985 and parameters: {'learning_rate': 0.07549709285875977, 'max_iter': 688, 'max_depth': 4, 'l2_regularization': 0.05268118183323756}. Best is trial 17 with value: 22.847894027660985.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 16. Best value: 22.9605:  34%|\u2588\u2588\u2588\u2588\u258d        | 17/50 [00:58<01:42,  3.11s/it]\rBest trial: 17. Best value: 22.8479:  34%|\u2588\u2588\u2588\u2588\u258d        | 17/50 [00:58<01:42,  3.11s/it]\rBest trial: 17. Best value: 22.8479:  36%|\u2588\u2588\u2588\u2588\u258b        | 18/50 [00:58<01:34,  2.95s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:42,019] Trial 18 finished with value: 22.949085918107517 and parameters: {'learning_rate': 0.07211243780748176, 'max_iter': 667, 'max_depth': 4, 'l2_regularization': 0.059714262025670775}. Best is trial 17 with value: 22.847894027660985.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 17. Best value: 22.8479:  36%|\u2588\u2588\u2588\u2588\u258b        | 18/50 [01:00<01:34,  2.95s/it]\rBest trial: 17. Best value: 22.8479:  36%|\u2588\u2588\u2588\u2588\u258b        | 18/50 [01:00<01:34,  2.95s/it]\rBest trial: 17. Best value: 22.8479:  38%|\u2588\u2588\u2588\u2588\u2589        | 19/50 [01:00<01:25,  2.75s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:43,716] Trial 19 finished with value: 23.630531159381754 and parameters: {'learning_rate': 0.03204699376878366, 'max_iter': 448, 'max_depth': 3, 'l2_regularization': 0.05687132735464337}. Best is trial 17 with value: 22.847894027660985.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 17. Best value: 22.8479:  38%|\u2588\u2588\u2588\u2588\u2589        | 19/50 [01:02<01:25,  2.75s/it]\rBest trial: 17. Best value: 22.8479:  38%|\u2588\u2588\u2588\u2588\u2589        | 19/50 [01:02<01:25,  2.75s/it]\rBest trial: 17. Best value: 22.8479:  40%|\u2588\u2588\u2588\u2588\u2588\u258f       | 20/50 [01:02<01:13,  2.44s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:46,255] Trial 20 finished with value: 22.951243764435183 and parameters: {'learning_rate': 0.0741063682787721, 'max_iter': 667, 'max_depth': 4, 'l2_regularization': 0.0031842475625878156}. Best is trial 17 with value: 22.847894027660985.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 17. Best value: 22.8479:  40%|\u2588\u2588\u2588\u2588\u2588\u258f       | 20/50 [01:05<01:13,  2.44s/it]\rBest trial: 17. Best value: 22.8479:  40%|\u2588\u2588\u2588\u2588\u2588\u258f       | 20/50 [01:05<01:13,  2.44s/it]\rBest trial: 17. Best value: 22.8479:  42%|\u2588\u2588\u2588\u2588\u2588\u258d       | 21/50 [01:05<01:11,  2.47s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:48,775] Trial 21 finished with value: 22.94378917426972 and parameters: {'learning_rate': 0.0647303627639389, 'max_iter': 648, 'max_depth': 4, 'l2_regularization': 0.0024467580095302167}. Best is trial 17 with value: 22.847894027660985.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 17. Best value: 22.8479:  42%|\u2588\u2588\u2588\u2588\u2588\u258d       | 21/50 [01:07<01:11,  2.47s/it]\rBest trial: 17. Best value: 22.8479:  42%|\u2588\u2588\u2588\u2588\u2588\u258d       | 21/50 [01:07<01:11,  2.47s/it]\rBest trial: 17. Best value: 22.8479:  44%|\u2588\u2588\u2588\u2588\u2588\u258b       | 22/50 [01:07<01:09,  2.48s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:51,384] Trial 22 finished with value: 23.061144470562958 and parameters: {'learning_rate': 0.06968818604253617, 'max_iter': 689, 'max_depth': 4, 'l2_regularization': 0.0020378010725352028}. Best is trial 17 with value: 22.847894027660985.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 17. Best value: 22.8479:  44%|\u2588\u2588\u2588\u2588\u2588\u258b       | 22/50 [01:10<01:09,  2.48s/it]\rBest trial: 17. Best value: 22.8479:  44%|\u2588\u2588\u2588\u2588\u2588\u258b       | 22/50 [01:10<01:09,  2.48s/it]\rBest trial: 17. Best value: 22.8479:  46%|\u2588\u2588\u2588\u2588\u2588\u2589       | 23/50 [01:10<01:08,  2.52s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:53,678] Trial 23 finished with value: 23.537670391864268 and parameters: {'learning_rate': 0.030101968046869702, 'max_iter': 556, 'max_depth': 5, 'l2_regularization': 0.03501826010226756}. Best is trial 17 with value: 22.847894027660985.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 17. Best value: 22.8479:  46%|\u2588\u2588\u2588\u2588\u2588\u2589       | 23/50 [01:12<01:08,  2.52s/it]\rBest trial: 17. Best value: 22.8479:  46%|\u2588\u2588\u2588\u2588\u2588\u2589       | 23/50 [01:12<01:08,  2.52s/it]\rBest trial: 17. Best value: 22.8479:  48%|\u2588\u2588\u2588\u2588\u2588\u2588\u258f      | 24/50 [01:12<01:03,  2.45s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:56,237] Trial 24 finished with value: 22.86622381539224 and parameters: {'learning_rate': 0.1273861290042026, 'max_iter': 716, 'max_depth': 3, 'l2_regularization': 0.07684218795139204}. Best is trial 17 with value: 22.847894027660985.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 17. Best value: 22.8479:  48%|\u2588\u2588\u2588\u2588\u2588\u2588\u258f      | 24/50 [01:15<01:03,  2.45s/it]\rBest trial: 17. Best value: 22.8479:  48%|\u2588\u2588\u2588\u2588\u2588\u2588\u258f      | 24/50 [01:15<01:03,  2.45s/it]\rBest trial: 17. Best value: 22.8479:  50%|\u2588\u2588\u2588\u2588\u2588\u2588\u258c      | 25/50 [01:15<01:02,  2.48s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:57,827] Trial 25 finished with value: 22.82458319278596 and parameters: {'learning_rate': 0.12900479217399094, 'max_iter': 433, 'max_depth': 3, 'l2_regularization': 0.0009961079026696788}. Best is trial 25 with value: 22.82458319278596.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 17. Best value: 22.8479:  50%|\u2588\u2588\u2588\u2588\u2588\u2588\u258c      | 25/50 [01:16<01:02,  2.48s/it]\rBest trial: 25. Best value: 22.8246:  50%|\u2588\u2588\u2588\u2588\u2588\u2588\u258c      | 25/50 [01:16<01:02,  2.48s/it]\rBest trial: 25. Best value: 22.8246:  52%|\u2588\u2588\u2588\u2588\u2588\u2588\u258a      | 26/50 [01:16<00:53,  2.22s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:27:59,662] Trial 26 finished with value: 22.904122852854737 and parameters: {'learning_rate': 0.14246461667181878, 'max_iter': 448, 'max_depth': 3, 'l2_regularization': 0.0007115665435059283}. Best is trial 25 with value: 22.82458319278596.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 25. Best value: 22.8246:  52%|\u2588\u2588\u2588\u2588\u2588\u2588\u258a      | 26/50 [01:18<00:53,  2.22s/it]\rBest trial: 25. Best value: 22.8246:  52%|\u2588\u2588\u2588\u2588\u2588\u2588\u258a      | 26/50 [01:18<00:53,  2.22s/it]\rBest trial: 25. Best value: 22.8246:  54%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588      | 27/50 [01:18<00:48,  2.10s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:00,905] Trial 27 finished with value: 22.964266135375084 and parameters: {'learning_rate': 0.12714191398854705, 'max_iter': 404, 'max_depth': 3, 'l2_regularization': 0.0008403312056734947}. Best is trial 25 with value: 22.82458319278596.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 25. Best value: 22.8246:  54%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588      | 27/50 [01:19<00:48,  2.10s/it]\rBest trial: 25. Best value: 22.8246:  54%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588      | 27/50 [01:19<00:48,  2.10s/it]\rBest trial: 25. Best value: 22.8246:  56%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e     | 28/50 [01:19<00:40,  1.84s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:03,060] Trial 28 finished with value: 22.899512608194325 and parameters: {'learning_rate': 0.09006170176011448, 'max_iter': 724, 'max_depth': 3, 'l2_regularization': 0.08466722492883946}. Best is trial 25 with value: 22.82458319278596.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 25. Best value: 22.8246:  56%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e     | 28/50 [01:21<00:40,  1.84s/it]\rBest trial: 25. Best value: 22.8246:  56%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e     | 28/50 [01:21<00:40,  1.84s/it]\rBest trial: 25. Best value: 22.8246:  58%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c     | 29/50 [01:21<00:40,  1.94s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:04,896] Trial 29 finished with value: 22.971921148605112 and parameters: {'learning_rate': 0.08868774484035442, 'max_iter': 593, 'max_depth': 5, 'l2_regularization': 0.01791962940005459}. Best is trial 25 with value: 22.82458319278596.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 25. Best value: 22.8246:  58%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c     | 29/50 [01:23<00:40,  1.94s/it]\rBest trial: 25. Best value: 22.8246:  58%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c     | 29/50 [01:23<00:40,  1.94s/it]\rBest trial: 25. Best value: 22.8246:  60%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a     | 30/50 [01:23<00:38,  1.91s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:06,450] Trial 30 finished with value: 22.921966162461644 and parameters: {'learning_rate': 0.14260605470909252, 'max_iter': 505, 'max_depth': 3, 'l2_regularization': 0.0003288761999876828}. Best is trial 25 with value: 22.82458319278596.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 25. Best value: 22.8246:  60%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a     | 30/50 [01:25<00:38,  1.91s/it]\rBest trial: 25. Best value: 22.8246:  60%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a     | 30/50 [01:25<00:38,  1.91s/it]\rBest trial: 25. Best value: 22.8246:  62%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588     | 31/50 [01:25<00:34,  1.80s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:08,352] Trial 31 finished with value: 22.960797050673637 and parameters: {'learning_rate': 0.09605564872840847, 'max_iter': 719, 'max_depth': 3, 'l2_regularization': 0.0900090861657557}. Best is trial 25 with value: 22.82458319278596.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 25. Best value: 22.8246:  62%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588     | 31/50 [01:27<00:34,  1.80s/it]\rBest trial: 25. Best value: 22.8246:  62%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588     | 31/50 [01:27<00:34,  1.80s/it]\rBest trial: 25. Best value: 22.8246:  64%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e    | 32/50 [01:27<00:32,  1.83s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:10,416] Trial 32 finished with value: 22.92876845466572 and parameters: {'learning_rate': 0.08375601140358711, 'max_iter': 733, 'max_depth': 4, 'l2_regularization': 0.09511892844742247}. Best is trial 25 with value: 22.82458319278596.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 25. Best value: 22.8246:  64%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e    | 32/50 [01:29<00:32,  1.83s/it]\rBest trial: 25. Best value: 22.8246:  64%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e    | 32/50 [01:29<00:32,  1.83s/it]\rBest trial: 25. Best value: 22.8246:  66%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c    | 33/50 [01:29<00:32,  1.90s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:13,137] Trial 33 finished with value: 22.78715742447207 and parameters: {'learning_rate': 0.12764196072755207, 'max_iter': 867, 'max_depth': 3, 'l2_regularization': 0.023606615901631333}. Best is trial 33 with value: 22.78715742447207.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 25. Best value: 22.8246:  66%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c    | 33/50 [01:32<00:32,  1.90s/it]\rBest trial: 33. Best value: 22.7872:  66%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c    | 33/50 [01:32<00:32,  1.90s/it]\rBest trial: 33. Best value: 22.7872:  68%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a    | 34/50 [01:32<00:34,  2.15s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:15,965] Trial 34 finished with value: 23.046806853603652 and parameters: {'learning_rate': 0.12394845340897738, 'max_iter': 872, 'max_depth': 4, 'l2_regularization': 0.027646179305742584}. Best is trial 33 with value: 22.78715742447207.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 33. Best value: 22.7872:  68%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a    | 34/50 [01:34<00:34,  2.15s/it]\rBest trial: 33. Best value: 22.7872:  68%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a    | 34/50 [01:34<00:34,  2.15s/it]\rBest trial: 33. Best value: 22.7872:  70%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588    | 35/50 [01:34<00:35,  2.35s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:18,562] Trial 35 finished with value: 22.927279367160843 and parameters: {'learning_rate': 0.1527658755143074, 'max_iter': 866, 'max_depth': 3, 'l2_regularization': 0.011745378979940838}. Best is trial 33 with value: 22.78715742447207.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 33. Best value: 22.7872:  70%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588    | 35/50 [01:37<00:35,  2.35s/it]\rBest trial: 33. Best value: 22.7872:  70%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588    | 35/50 [01:37<00:35,  2.35s/it]\rBest trial: 33. Best value: 22.7872:  72%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e   | 36/50 [01:37<00:33,  2.43s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:21,716] Trial 36 finished with value: 23.087677968231922 and parameters: {'learning_rate': 0.057109364719536225, 'max_iter': 893, 'max_depth': 5, 'l2_regularization': 0.004776421794055054}. Best is trial 33 with value: 22.78715742447207.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 33. Best value: 22.7872:  72%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e   | 36/50 [01:40<00:33,  2.43s/it]\rBest trial: 33. Best value: 22.7872:  72%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e   | 36/50 [01:40<00:33,  2.43s/it]\rBest trial: 33. Best value: 22.7872:  74%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c   | 37/50 [01:40<00:34,  2.64s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:22,846] Trial 37 finished with value: 22.986585232806874 and parameters: {'learning_rate': 0.1996326659620594, 'max_iter': 392, 'max_depth': 3, 'l2_regularization': 0.0002849276201882884}. Best is trial 33 with value: 22.78715742447207.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 33. Best value: 22.7872:  74%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c   | 37/50 [01:41<00:34,  2.64s/it]\rBest trial: 33. Best value: 22.7872:  74%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c   | 37/50 [01:41<00:34,  2.64s/it]\rBest trial: 33. Best value: 22.7872:  76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589   | 38/50 [01:41<00:26,  2.19s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:25,961] Trial 38 finished with value: 22.929065325845915 and parameters: {'learning_rate': 0.11200320039956571, 'max_iter': 793, 'max_depth': 8, 'l2_regularization': 0.0015532408047981242}. Best is trial 33 with value: 22.78715742447207.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 33. Best value: 22.7872:  76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589   | 38/50 [01:44<00:26,  2.19s/it]\rBest trial: 33. Best value: 22.7872:  76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589   | 38/50 [01:44<00:26,  2.19s/it]\rBest trial: 33. Best value: 22.7872:  78%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  | 39/50 [01:44<00:27,  2.47s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:26,802] Trial 39 finished with value: 23.180827231238293 and parameters: {'learning_rate': 0.1368443730580843, 'max_iter': 203, 'max_depth': 4, 'l2_regularization': 0.01604029808526029}. Best is trial 33 with value: 22.78715742447207.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 33. Best value: 22.7872:  78%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  | 39/50 [01:45<00:27,  2.47s/it]\rBest trial: 33. Best value: 22.7872:  78%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f  | 39/50 [01:45<00:27,  2.47s/it]\rBest trial: 33. Best value: 22.7872:  80%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d  | 40/50 [01:45<00:19,  1.98s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:29,203] Trial 40 finished with value: 23.05008391769426 and parameters: {'learning_rate': 0.039884547737943706, 'max_iter': 823, 'max_depth': 3, 'l2_regularization': 0.005478812425959695}. Best is trial 33 with value: 22.78715742447207.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 33. Best value: 22.7872:  80%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d  | 40/50 [01:48<00:19,  1.98s/it]\rBest trial: 33. Best value: 22.7872:  80%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d  | 40/50 [01:48<00:19,  1.98s/it]\rBest trial: 33. Best value: 22.7872:  82%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b  | 41/50 [01:48<00:18,  2.11s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:31,295] Trial 41 finished with value: 22.92302135977269 and parameters: {'learning_rate': 0.09484931322184532, 'max_iter': 736, 'max_depth': 3, 'l2_regularization': 0.0507390292137022}. Best is trial 33 with value: 22.78715742447207.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 33. Best value: 22.7872:  82%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b  | 41/50 [01:50<00:18,  2.11s/it]\rBest trial: 33. Best value: 22.7872:  82%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b  | 41/50 [01:50<00:18,  2.11s/it]\rBest trial: 33. Best value: 22.7872:  84%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589  | 42/50 [01:50<00:16,  2.10s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:33,349] Trial 42 finished with value: 22.905315135033987 and parameters: {'learning_rate': 0.08080087429953081, 'max_iter': 609, 'max_depth': 3, 'l2_regularization': 0.10491932302974769}. Best is trial 33 with value: 22.78715742447207.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 33. Best value: 22.7872:  84%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589  | 42/50 [01:52<00:16,  2.10s/it]\rBest trial: 33. Best value: 22.7872:  84%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589  | 42/50 [01:52<00:16,  2.10s/it]\rBest trial: 33. Best value: 22.7872:  86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f | 43/50 [01:52<00:14,  2.09s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:34,987] Trial 43 finished with value: 23.113907578199864 and parameters: {'learning_rate': 0.056322791121416096, 'max_iter': 516, 'max_depth': 4, 'l2_regularization': 0.029650837709227256}. Best is trial 33 with value: 22.78715742447207.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 33. Best value: 22.7872:  86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f | 43/50 [01:53<00:14,  2.09s/it]\rBest trial: 33. Best value: 22.7872:  86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f | 43/50 [01:53<00:14,  2.09s/it]\rBest trial: 33. Best value: 22.7872:  88%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d | 44/50 [01:53<00:11,  1.95s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:37,929] Trial 44 finished with value: 22.751256983509155 and parameters: {'learning_rate': 0.1051869732365331, 'max_iter': 754, 'max_depth': 3, 'l2_regularization': 0.3295002878918103}. Best is trial 44 with value: 22.751256983509155.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 33. Best value: 22.7872:  88%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d | 44/50 [01:56<00:11,  1.95s/it]\rBest trial: 44. Best value: 22.7513:  88%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d | 44/50 [01:56<00:11,  1.95s/it]\rBest trial: 44. Best value: 22.7513:  90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b | 45/50 [01:56<00:11,  2.25s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:40,695] Trial 45 finished with value: 22.917342671732683 and parameters: {'learning_rate': 0.1120499747747725, 'max_iter': 785, 'max_depth': 4, 'l2_regularization': 0.3316703050667044}. Best is trial 44 with value: 22.751256983509155.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 44. Best value: 22.7513:  90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b | 45/50 [01:59<00:11,  2.25s/it]\rBest trial: 44. Best value: 22.7513:  90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b | 45/50 [01:59<00:11,  2.25s/it]\rBest trial: 44. Best value: 22.7513:  92%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589 | 46/50 [01:59<00:09,  2.40s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:43,420] Trial 46 finished with value: 22.876482504503304 and parameters: {'learning_rate': 0.15991613895889545, 'max_iter': 825, 'max_depth': 3, 'l2_regularization': 0.3801171751597046}. Best is trial 44 with value: 22.751256983509155.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 44. Best value: 22.7513:  92%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589 | 46/50 [02:02<00:09,  2.40s/it]\rBest trial: 44. Best value: 22.7513:  92%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589 | 46/50 [02:02<00:09,  2.40s/it]\rBest trial: 44. Best value: 22.7513:  94%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f| 47/50 [02:02<00:07,  2.50s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:46,172] Trial 47 finished with value: 23.001839671198226 and parameters: {'learning_rate': 0.10350334228873646, 'max_iter': 758, 'max_depth': 9, 'l2_regularization': 0.5220905310342985}. Best is trial 44 with value: 22.751256983509155.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 44. Best value: 22.7513:  94%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f| 47/50 [02:05<00:07,  2.50s/it]\rBest trial: 44. Best value: 22.7513:  94%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f| 47/50 [02:05<00:07,  2.50s/it]\rBest trial: 44. Best value: 22.7513:  96%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d| 48/50 [02:05<00:05,  2.58s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:47,410] Trial 48 finished with value: 23.56204332016288 and parameters: {'learning_rate': 0.049518287282104195, 'max_iter': 337, 'max_depth': 4, 'l2_regularization': 0.00892641603609626}. Best is trial 44 with value: 22.751256983509155.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 44. Best value: 22.7513:  96%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d| 48/50 [02:06<00:05,  2.58s/it]\rBest trial: 44. Best value: 22.7513:  96%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d| 48/50 [02:06<00:05,  2.58s/it]\rBest trial: 44. Best value: 22.7513:  98%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b| 49/50 [02:06<00:02,  2.17s/it]\r                                                                                       \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:50,577] Trial 49 finished with value: 23.27649967049332 and parameters: {'learning_rate': 0.13407823298543223, 'max_iter': 908, 'max_depth': 5, 'l2_regularization': 0.22163062439504555}. Best is trial 44 with value: 22.751256983509155.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 44. Best value: 22.7513:  98%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b| 49/50 [02:09<00:02,  2.17s/it]\rBest trial: 44. Best value: 22.7513:  98%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b| 49/50 [02:09<00:02,  2.17s/it]\rBest trial: 44. Best value: 22.7513: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 50/50 [02:09<00:00,  2.47s/it]\rBest trial: 44. Best value: 22.7513: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 50/50 [02:09<00:00,  2.59s/it]\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Phase 4 (HistGBM+Optuna) Best CV RMSE: 22.7513\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "840fcb296874fe854e1e9f2bc53ce8f7",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "[I 2026-01-11 11:28:52,402] A new study created in memory with name: no-name-2c5bc2d9-0e26-4385-a66e-2776fe44d728\n\r  0%|                                                                | 0/50 [00:00<?, ?it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:53,138] Trial 0 finished with value: 19.400242022858755 and parameters: {'n_estimators': 138, 'max_depth': 10, 'min_samples_split': 5, 'max_features': 0.339723498787697}. Best is trial 0 with value: 19.400242022858755.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\r  0%|                                                                | 0/50 [00:00<?, ?it/s]\rBest trial: 0. Best value: 19.4002:   0%|                            | 0/50 [00:00<?, ?it/s]\rBest trial: 0. Best value: 19.4002:   2%|\u258d                   | 1/50 [00:00<00:36,  1.36it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:54,102] Trial 1 finished with value: 20.018278458448684 and parameters: {'n_estimators': 198, 'max_depth': 9, 'min_samples_split': 3, 'max_features': 0.26286429661924615}. Best is trial 0 with value: 19.400242022858755.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 0. Best value: 19.4002:   2%|\u258d                   | 1/50 [00:01<00:36,  1.36it/s]\rBest trial: 0. Best value: 19.4002:   2%|\u258d                   | 1/50 [00:01<00:36,  1.36it/s]\rBest trial: 0. Best value: 19.4002:   4%|\u258a                   | 2/50 [00:01<00:41,  1.15it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:55,461] Trial 2 finished with value: 19.449366646856255 and parameters: {'n_estimators': 272, 'max_depth': 12, 'min_samples_split': 4, 'max_features': 0.499733246522177}. Best is trial 0 with value: 19.400242022858755.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 0. Best value: 19.4002:   4%|\u258a                   | 2/50 [00:03<00:41,  1.15it/s]\rBest trial: 0. Best value: 19.4002:   4%|\u258a                   | 2/50 [00:03<00:41,  1.15it/s]\rBest trial: 0. Best value: 19.4002:   6%|\u2588\u258f                  | 3/50 [00:03<00:51,  1.09s/it]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:55,735] Trial 3 finished with value: 19.27867784978021 and parameters: {'n_estimators': 54, 'max_depth': 9, 'min_samples_split': 4, 'max_features': 0.33240124718639796}. Best is trial 3 with value: 19.27867784978021.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 0. Best value: 19.4002:   6%|\u2588\u258f                  | 3/50 [00:03<00:51,  1.09s/it]\rBest trial: 3. Best value: 19.2787:   6%|\u2588\u258f                  | 3/50 [00:03<00:51,  1.09s/it]\rBest trial: 3. Best value: 19.2787:   8%|\u2588\u258c                  | 4/50 [00:03<00:35,  1.30it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:56,566] Trial 4 finished with value: 19.10554301295322 and parameters: {'n_estimators': 163, 'max_depth': 10, 'min_samples_split': 2, 'max_features': 0.4849706428670123}. Best is trial 4 with value: 19.10554301295322.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 3. Best value: 19.2787:   8%|\u2588\u258c                  | 4/50 [00:04<00:35,  1.30it/s]\rBest trial: 4. Best value: 19.1055:   8%|\u2588\u258c                  | 4/50 [00:04<00:35,  1.30it/s]\rBest trial: 4. Best value: 19.1055:  10%|\u2588\u2588                  | 5/50 [00:04<00:35,  1.26it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:57,249] Trial 5 finished with value: 19.969916905267986 and parameters: {'n_estimators': 141, 'max_depth': 3, 'min_samples_split': 6, 'max_features': 0.8950683253681035}. Best is trial 4 with value: 19.10554301295322.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 4. Best value: 19.1055:  10%|\u2588\u2588                  | 5/50 [00:04<00:35,  1.26it/s]\rBest trial: 4. Best value: 19.1055:  10%|\u2588\u2588                  | 5/50 [00:04<00:35,  1.26it/s]\rBest trial: 4. Best value: 19.1055:  12%|\u2588\u2588\u258d                 | 6/50 [00:04<00:33,  1.32it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:57,873] Trial 6 finished with value: 19.106813386047765 and parameters: {'n_estimators': 118, 'max_depth': 7, 'min_samples_split': 3, 'max_features': 0.6022352462770668}. Best is trial 4 with value: 19.10554301295322.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 4. Best value: 19.1055:  12%|\u2588\u2588\u258d                 | 6/50 [00:05<00:33,  1.32it/s]\rBest trial: 4. Best value: 19.1055:  12%|\u2588\u2588\u258d                 | 6/50 [00:05<00:33,  1.32it/s]\rBest trial: 4. Best value: 19.1055:  14%|\u2588\u2588\u258a                 | 7/50 [00:05<00:30,  1.40it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:59,213] Trial 7 finished with value: 19.567268555383418 and parameters: {'n_estimators': 272, 'max_depth': 6, 'min_samples_split': 7, 'max_features': 0.5350195780946956}. Best is trial 4 with value: 19.10554301295322.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 4. Best value: 19.1055:  14%|\u2588\u2588\u258a                 | 7/50 [00:06<00:30,  1.40it/s]\rBest trial: 4. Best value: 19.1055:  14%|\u2588\u2588\u258a                 | 7/50 [00:06<00:30,  1.40it/s]\rBest trial: 4. Best value: 19.1055:  16%|\u2588\u2588\u2588\u258f                | 8/50 [00:06<00:38,  1.10it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:28:59,875] Trial 8 finished with value: 19.616571634943874 and parameters: {'n_estimators': 132, 'max_depth': 6, 'min_samples_split': 7, 'max_features': 0.48672439784471677}. Best is trial 4 with value: 19.10554301295322.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 4. Best value: 19.1055:  16%|\u2588\u2588\u2588\u258f                | 8/50 [00:07<00:38,  1.10it/s]\rBest trial: 4. Best value: 19.1055:  16%|\u2588\u2588\u2588\u258f                | 8/50 [00:07<00:38,  1.10it/s]\rBest trial: 4. Best value: 19.1055:  18%|\u2588\u2588\u2588\u258c                | 9/50 [00:07<00:34,  1.20it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:00,237] Trial 9 finished with value: 18.784657335312048 and parameters: {'n_estimators': 63, 'max_depth': 13, 'min_samples_split': 2, 'max_features': 0.8736007236152858}. Best is trial 9 with value: 18.784657335312048.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 4. Best value: 19.1055:  18%|\u2588\u2588\u2588\u258c                | 9/50 [00:07<00:34,  1.20it/s]\rBest trial: 9. Best value: 18.7847:  18%|\u2588\u2588\u2588\u258c                | 9/50 [00:07<00:34,  1.20it/s]\rBest trial: 9. Best value: 18.7847:  20%|\u2588\u2588\u2588\u258a               | 10/50 [00:07<00:27,  1.45it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:00,550] Trial 10 finished with value: 19.38405271818879 and parameters: {'n_estimators': 55, 'max_depth': 15, 'min_samples_split': 10, 'max_features': 0.9288936246505972}. Best is trial 9 with value: 18.784657335312048.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 9. Best value: 18.7847:  20%|\u2588\u2588\u2588\u258a               | 10/50 [00:08<00:27,  1.45it/s]\rBest trial: 9. Best value: 18.7847:  20%|\u2588\u2588\u2588\u258a               | 10/50 [00:08<00:27,  1.45it/s]\rBest trial: 9. Best value: 18.7847:  22%|\u2588\u2588\u2588\u2588\u258f              | 11/50 [00:08<00:22,  1.74it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:01,721] Trial 11 finished with value: 18.82884260092126 and parameters: {'n_estimators': 217, 'max_depth': 14, 'min_samples_split': 2, 'max_features': 0.7540611067636176}. Best is trial 9 with value: 18.784657335312048.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 9. Best value: 18.7847:  22%|\u2588\u2588\u2588\u2588\u258f              | 11/50 [00:09<00:22,  1.74it/s]\rBest trial: 9. Best value: 18.7847:  22%|\u2588\u2588\u2588\u2588\u258f              | 11/50 [00:09<00:22,  1.74it/s]\rBest trial: 9. Best value: 18.7847:  24%|\u2588\u2588\u2588\u2588\u258c              | 12/50 [00:09<00:28,  1.32it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:02,908] Trial 12 finished with value: 18.772757733769772 and parameters: {'n_estimators': 221, 'max_depth': 14, 'min_samples_split': 2, 'max_features': 0.7266841679337042}. Best is trial 12 with value: 18.772757733769772.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 9. Best value: 18.7847:  24%|\u2588\u2588\u2588\u2588\u258c              | 12/50 [00:10<00:28,  1.32it/s]\rBest trial: 12. Best value: 18.7728:  24%|\u2588\u2588\u2588\u2588\u258e             | 12/50 [00:10<00:28,  1.32it/s]\rBest trial: 12. Best value: 18.7728:  26%|\u2588\u2588\u2588\u2588\u258b             | 13/50 [00:10<00:32,  1.13it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:04,152] Trial 13 finished with value: 18.8503877483092 and parameters: {'n_estimators': 228, 'max_depth': 13, 'min_samples_split': 2, 'max_features': 0.7463129691396697}. Best is trial 12 with value: 18.772757733769772.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 12. Best value: 18.7728:  26%|\u2588\u2588\u2588\u2588\u258b             | 13/50 [00:11<00:32,  1.13it/s]\rBest trial: 12. Best value: 18.7728:  26%|\u2588\u2588\u2588\u2588\u258b             | 13/50 [00:11<00:32,  1.13it/s]\rBest trial: 12. Best value: 18.7728:  28%|\u2588\u2588\u2588\u2588\u2588             | 14/50 [00:11<00:35,  1.01it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:04,640] Trial 14 finished with value: 19.288559213499646 and parameters: {'n_estimators': 94, 'max_depth': 12, 'min_samples_split': 10, 'max_features': 0.7793115805862386}. Best is trial 12 with value: 18.772757733769772.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 12. Best value: 18.7728:  28%|\u2588\u2588\u2588\u2588\u2588             | 14/50 [00:12<00:35,  1.01it/s]\rBest trial: 12. Best value: 18.7728:  28%|\u2588\u2588\u2588\u2588\u2588             | 14/50 [00:12<00:35,  1.01it/s]\rBest trial: 12. Best value: 18.7728:  30%|\u2588\u2588\u2588\u2588\u2588\u258d            | 15/50 [00:12<00:29,  1.19it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:05,879] Trial 15 finished with value: 19.176186519722357 and parameters: {'n_estimators': 240, 'max_depth': 15, 'min_samples_split': 4, 'max_features': 0.6636793453157026}. Best is trial 12 with value: 18.772757733769772.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 12. Best value: 18.7728:  30%|\u2588\u2588\u2588\u2588\u2588\u258d            | 15/50 [00:13<00:29,  1.19it/s]\rBest trial: 12. Best value: 18.7728:  30%|\u2588\u2588\u2588\u2588\u2588\u258d            | 15/50 [00:13<00:29,  1.19it/s]\rBest trial: 12. Best value: 18.7728:  32%|\u2588\u2588\u2588\u2588\u2588\u258a            | 16/50 [00:13<00:32,  1.04it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:06,824] Trial 16 finished with value: 19.524686571966267 and parameters: {'n_estimators': 183, 'max_depth': 12, 'min_samples_split': 8, 'max_features': 0.9780577185924988}. Best is trial 12 with value: 18.772757733769772.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 12. Best value: 18.7728:  32%|\u2588\u2588\u2588\u2588\u2588\u258a            | 16/50 [00:14<00:32,  1.04it/s]\rBest trial: 12. Best value: 18.7728:  32%|\u2588\u2588\u2588\u2588\u2588\u258a            | 16/50 [00:14<00:32,  1.04it/s]\rBest trial: 12. Best value: 18.7728:  34%|\u2588\u2588\u2588\u2588\u2588\u2588            | 17/50 [00:14<00:31,  1.05it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:07,343] Trial 17 finished with value: 18.728764913912766 and parameters: {'n_estimators': 92, 'max_depth': 13, 'min_samples_split': 3, 'max_features': 0.8266991816284285}. Best is trial 17 with value: 18.728764913912766.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 12. Best value: 18.7728:  34%|\u2588\u2588\u2588\u2588\u2588\u2588            | 17/50 [00:14<00:31,  1.05it/s]\rBest trial: 17. Best value: 18.7288:  34%|\u2588\u2588\u2588\u2588\u2588\u2588            | 17/50 [00:14<00:31,  1.05it/s]\rBest trial: 17. Best value: 18.7288:  36%|\u2588\u2588\u2588\u2588\u2588\u2588\u258d           | 18/50 [00:14<00:26,  1.21it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:08,829] Trial 18 finished with value: 19.068248699464565 and parameters: {'n_estimators': 289, 'max_depth': 11, 'min_samples_split': 5, 'max_features': 0.8245378149901182}. Best is trial 17 with value: 18.728764913912766.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 17. Best value: 18.7288:  36%|\u2588\u2588\u2588\u2588\u2588\u2588\u258d           | 18/50 [00:16<00:26,  1.21it/s]\rBest trial: 17. Best value: 18.7288:  36%|\u2588\u2588\u2588\u2588\u2588\u2588\u258d           | 18/50 [00:16<00:26,  1.21it/s]\rBest trial: 17. Best value: 18.7288:  38%|\u2588\u2588\u2588\u2588\u2588\u2588\u258a           | 19/50 [00:16<00:31,  1.02s/it]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:09,263] Trial 19 finished with value: 19.934372905624276 and parameters: {'n_estimators': 86, 'max_depth': 14, 'min_samples_split': 3, 'max_features': 0.12176955103227544}. Best is trial 17 with value: 18.728764913912766.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 17. Best value: 18.7288:  38%|\u2588\u2588\u2588\u2588\u2588\u2588\u258a           | 19/50 [00:16<00:31,  1.02s/it]\rBest trial: 17. Best value: 18.7288:  38%|\u2588\u2588\u2588\u2588\u2588\u2588\u258a           | 19/50 [00:16<00:31,  1.02s/it]\rBest trial: 17. Best value: 18.7288:  40%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f          | 20/50 [00:16<00:25,  1.18it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:10,520] Trial 20 finished with value: 19.43334012328541 and parameters: {'n_estimators': 247, 'max_depth': 15, 'min_samples_split': 5, 'max_features': 0.6624943303084385}. Best is trial 17 with value: 18.728764913912766.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 17. Best value: 18.7288:  40%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f          | 20/50 [00:18<00:25,  1.18it/s]\rBest trial: 17. Best value: 18.7288:  40%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f          | 20/50 [00:18<00:25,  1.18it/s]\rBest trial: 17. Best value: 18.7288:  42%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c          | 21/50 [00:18<00:28,  1.03it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:10,990] Trial 21 finished with value: 18.63368250491329 and parameters: {'n_estimators': 83, 'max_depth': 13, 'min_samples_split': 2, 'max_features': 0.8552047509669906}. Best is trial 21 with value: 18.63368250491329.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 17. Best value: 18.7288:  42%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c          | 21/50 [00:18<00:28,  1.03it/s]\rBest trial: 21. Best value: 18.6337:  42%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c          | 21/50 [00:18<00:28,  1.03it/s]\rBest trial: 21. Best value: 18.6337:  44%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589          | 22/50 [00:18<00:22,  1.22it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:11,541] Trial 22 finished with value: 18.786580071196312 and parameters: {'n_estimators': 97, 'max_depth': 13, 'min_samples_split': 3, 'max_features': 0.987534001891627}. Best is trial 21 with value: 18.63368250491329.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 21. Best value: 18.6337:  44%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589          | 22/50 [00:19<00:22,  1.22it/s]\rBest trial: 21. Best value: 18.6337:  44%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589          | 22/50 [00:19<00:22,  1.22it/s]\rBest trial: 21. Best value: 18.6337:  46%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e         | 23/50 [00:19<00:19,  1.35it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:12,420] Trial 23 finished with value: 18.905222750624453 and parameters: {'n_estimators': 164, 'max_depth': 11, 'min_samples_split': 2, 'max_features': 0.6749034066362279}. Best is trial 21 with value: 18.63368250491329.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 21. Best value: 18.6337:  46%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e         | 23/50 [00:20<00:19,  1.35it/s]\rBest trial: 21. Best value: 18.6337:  46%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e         | 23/50 [00:20<00:19,  1.35it/s]\rBest trial: 21. Best value: 18.6337:  48%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b         | 24/50 [00:20<00:20,  1.28it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:12,880] Trial 24 finished with value: 18.6985498567626 and parameters: {'n_estimators': 82, 'max_depth': 14, 'min_samples_split': 3, 'max_features': 0.8467746841444427}. Best is trial 21 with value: 18.63368250491329.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 21. Best value: 18.6337:  48%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b         | 24/50 [00:20<00:20,  1.28it/s]\rBest trial: 21. Best value: 18.6337:  48%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b         | 24/50 [00:20<00:20,  1.28it/s]\rBest trial: 21. Best value: 18.6337:  50%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588         | 25/50 [00:20<00:17,  1.46it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:13,306] Trial 25 finished with value: 18.797035541586425 and parameters: {'n_estimators': 77, 'max_depth': 11, 'min_samples_split': 4, 'max_features': 0.8345087281842876}. Best is trial 21 with value: 18.63368250491329.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 21. Best value: 18.6337:  50%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588         | 25/50 [00:20<00:17,  1.46it/s]\rBest trial: 21. Best value: 18.6337:  50%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588         | 25/50 [00:20<00:17,  1.46it/s]\rBest trial: 21. Best value: 18.6337:  52%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e        | 26/50 [00:20<00:14,  1.65it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:13,911] Trial 26 finished with value: 18.87680956474225 and parameters: {'n_estimators': 109, 'max_depth': 13, 'min_samples_split': 3, 'max_features': 0.9121181583584921}. Best is trial 21 with value: 18.63368250491329.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 21. Best value: 18.6337:  52%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e        | 26/50 [00:21<00:14,  1.65it/s]\rBest trial: 21. Best value: 18.6337:  52%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e        | 26/50 [00:21<00:14,  1.65it/s]\rBest trial: 21. Best value: 18.6337:  54%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b        | 27/50 [00:21<00:13,  1.65it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:14,542] Trial 27 finished with value: 19.092224155693117 and parameters: {'n_estimators': 119, 'max_depth': 8, 'min_samples_split': 6, 'max_features': 0.8226181412620884}. Best is trial 21 with value: 18.63368250491329.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 21. Best value: 18.6337:  54%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b        | 27/50 [00:22<00:13,  1.65it/s]\rBest trial: 21. Best value: 18.6337:  54%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b        | 27/50 [00:22<00:13,  1.65it/s]\rBest trial: 21. Best value: 18.6337:  56%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588        | 28/50 [00:22<00:13,  1.63it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:14,953] Trial 28 finished with value: 18.69096827529848 and parameters: {'n_estimators': 75, 'max_depth': 14, 'min_samples_split': 4, 'max_features': 0.5958772345180297}. Best is trial 21 with value: 18.63368250491329.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 21. Best value: 18.6337:  56%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588        | 28/50 [00:22<00:13,  1.63it/s]\rBest trial: 21. Best value: 18.6337:  56%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588        | 28/50 [00:22<00:13,  1.63it/s]\rBest trial: 21. Best value: 18.6337:  58%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d       | 29/50 [00:22<00:11,  1.81it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:15,358] Trial 29 finished with value: 18.927972629539504 and parameters: {'n_estimators': 75, 'max_depth': 15, 'min_samples_split': 5, 'max_features': 0.5980343540694226}. Best is trial 21 with value: 18.63368250491329.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 21. Best value: 18.6337:  58%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d       | 29/50 [00:22<00:11,  1.81it/s]\rBest trial: 21. Best value: 18.6337:  58%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d       | 29/50 [00:22<00:11,  1.81it/s]\rBest trial: 21. Best value: 18.6337:  60%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a       | 30/50 [00:22<00:10,  1.97it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:16,045] Trial 30 finished with value: 20.952425112908674 and parameters: {'n_estimators': 144, 'max_depth': 3, 'min_samples_split': 4, 'max_features': 0.40323716241315943}. Best is trial 21 with value: 18.63368250491329.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 21. Best value: 18.6337:  60%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a       | 30/50 [00:23<00:10,  1.97it/s]\rBest trial: 21. Best value: 18.6337:  60%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a       | 30/50 [00:23<00:10,  1.97it/s]\rBest trial: 21. Best value: 18.6337:  62%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f      | 31/50 [00:23<00:10,  1.78it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:16,469] Trial 31 finished with value: 18.662143787517458 and parameters: {'n_estimators': 74, 'max_depth': 14, 'min_samples_split': 3, 'max_features': 0.805160939883548}. Best is trial 21 with value: 18.63368250491329.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 21. Best value: 18.6337:  62%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f      | 31/50 [00:24<00:10,  1.78it/s]\rBest trial: 21. Best value: 18.6337:  62%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f      | 31/50 [00:24<00:10,  1.78it/s]\rBest trial: 21. Best value: 18.6337:  64%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c      | 32/50 [00:24<00:09,  1.92it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:16,867] Trial 32 finished with value: 18.505395837297822 and parameters: {'n_estimators': 71, 'max_depth': 14, 'min_samples_split': 3, 'max_features': 0.6890771731881923}. Best is trial 32 with value: 18.505395837297822.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 21. Best value: 18.6337:  64%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c      | 32/50 [00:24<00:09,  1.92it/s]\rBest trial: 32. Best value: 18.5054:  64%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c      | 32/50 [00:24<00:09,  1.92it/s]\rBest trial: 32. Best value: 18.5054:  66%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589      | 33/50 [00:24<00:08,  2.07it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:17,436] Trial 33 finished with value: 18.79530513195489 and parameters: {'n_estimators': 108, 'max_depth': 12, 'min_samples_split': 4, 'max_features': 0.5934856221753187}. Best is trial 32 with value: 18.505395837297822.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 32. Best value: 18.5054:  66%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589      | 33/50 [00:25<00:08,  2.07it/s]\rBest trial: 32. Best value: 18.5054:  66%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589      | 33/50 [00:25<00:08,  2.07it/s]\rBest trial: 32. Best value: 18.5054:  68%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f     | 34/50 [00:25<00:08,  1.96it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:17,817] Trial 34 finished with value: 18.670988778335705 and parameters: {'n_estimators': 70, 'max_depth': 14, 'min_samples_split': 5, 'max_features': 0.712985592378718}. Best is trial 32 with value: 18.505395837297822.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 32. Best value: 18.5054:  68%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f     | 34/50 [00:25<00:08,  1.96it/s]\rBest trial: 32. Best value: 18.5054:  68%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f     | 34/50 [00:25<00:08,  1.96it/s]\rBest trial: 32. Best value: 18.5054:  70%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c     | 35/50 [00:25<00:07,  2.12it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:18,115] Trial 35 finished with value: 18.32693636915024 and parameters: {'n_estimators': 51, 'max_depth': 10, 'min_samples_split': 5, 'max_features': 0.709909982066485}. Best is trial 35 with value: 18.32693636915024.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 32. Best value: 18.5054:  70%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c     | 35/50 [00:25<00:07,  2.12it/s]\rBest trial: 35. Best value: 18.3269:  70%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c     | 35/50 [00:25<00:07,  2.12it/s]\rBest trial: 35. Best value: 18.3269:  72%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589     | 36/50 [00:25<00:05,  2.39it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:18,398] Trial 36 finished with value: 18.692826594113342 and parameters: {'n_estimators': 51, 'max_depth': 10, 'min_samples_split': 6, 'max_features': 0.7859158559981544}. Best is trial 35 with value: 18.32693636915024.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 35. Best value: 18.3269:  72%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589     | 36/50 [00:25<00:05,  2.39it/s]\rBest trial: 35. Best value: 18.3269:  72%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589     | 36/50 [00:25<00:05,  2.39it/s]\rBest trial: 35. Best value: 18.3269:  74%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e    | 37/50 [00:25<00:04,  2.64it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:18,749] Trial 37 finished with value: 18.263777526566706 and parameters: {'n_estimators': 62, 'max_depth': 9, 'min_samples_split': 2, 'max_features': 0.6749701782543375}. Best is trial 37 with value: 18.263777526566706.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 35. Best value: 18.3269:  74%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e    | 37/50 [00:26<00:04,  2.64it/s]\rBest trial: 37. Best value: 18.2638:  74%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e    | 37/50 [00:26<00:04,  2.64it/s]\rBest trial: 37. Best value: 18.2638:  76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b    | 38/50 [00:26<00:04,  2.70it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:19,021] Trial 38 finished with value: 18.912041715998583 and parameters: {'n_estimators': 50, 'max_depth': 9, 'min_samples_split': 2, 'max_features': 0.44209590319557146}. Best is trial 37 with value: 18.263777526566706.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 37. Best value: 18.2638:  76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b    | 38/50 [00:26<00:04,  2.70it/s]\rBest trial: 37. Best value: 18.2638:  76%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b    | 38/50 [00:26<00:04,  2.70it/s]\rBest trial: 37. Best value: 18.2638:  78%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588    | 39/50 [00:26<00:03,  2.93it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:19,371] Trial 39 finished with value: 19.52946247333488 and parameters: {'n_estimators': 66, 'max_depth': 8, 'min_samples_split': 9, 'max_features': 0.5404736962838742}. Best is trial 37 with value: 18.263777526566706.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 37. Best value: 18.2638:  78%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588    | 39/50 [00:26<00:03,  2.93it/s]\rBest trial: 37. Best value: 18.2638:  78%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588    | 39/50 [00:26<00:03,  2.93it/s]\rBest trial: 37. Best value: 18.2638:  80%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d   | 40/50 [00:26<00:03,  2.91it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:20,035] Trial 40 finished with value: 19.46328750307127 and parameters: {'n_estimators': 127, 'max_depth': 10, 'min_samples_split': 7, 'max_features': 0.6441570959034061}. Best is trial 37 with value: 18.263777526566706.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 37. Best value: 18.2638:  80%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d   | 40/50 [00:27<00:03,  2.91it/s]\rBest trial: 37. Best value: 18.2638:  80%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d   | 40/50 [00:27<00:03,  2.91it/s]\rBest trial: 37. Best value: 18.2638:  82%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a   | 41/50 [00:27<00:03,  2.28it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:20,380] Trial 41 finished with value: 19.01440262278103 and parameters: {'n_estimators': 62, 'max_depth': 9, 'min_samples_split': 3, 'max_features': 0.6816622175025508}. Best is trial 37 with value: 18.263777526566706.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 37. Best value: 18.2638:  82%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a   | 41/50 [00:27<00:03,  2.28it/s]\rBest trial: 37. Best value: 18.2638:  82%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a   | 41/50 [00:27<00:03,  2.28it/s]\rBest trial: 37. Best value: 18.2638:  84%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588   | 42/50 [00:27<00:03,  2.43it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:20,949] Trial 42 finished with value: 18.675202218078017 and parameters: {'n_estimators': 101, 'max_depth': 8, 'min_samples_split': 2, 'max_features': 0.777905249223551}. Best is trial 37 with value: 18.263777526566706.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 37. Best value: 18.2638:  84%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588   | 42/50 [00:28<00:03,  2.43it/s]\rBest trial: 37. Best value: 18.2638:  84%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588   | 42/50 [00:28<00:03,  2.43it/s]\rBest trial: 37. Best value: 18.2638:  86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d  | 43/50 [00:28<00:03,  2.18it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:21,283] Trial 43 finished with value: 19.202121808435255 and parameters: {'n_estimators': 63, 'max_depth': 4, 'min_samples_split': 2, 'max_features': 0.7045767048092466}. Best is trial 37 with value: 18.263777526566706.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 37. Best value: 18.2638:  86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d  | 43/50 [00:28<00:03,  2.18it/s]\rBest trial: 37. Best value: 18.2638:  86%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258d  | 43/50 [00:28<00:03,  2.18it/s]\rBest trial: 37. Best value: 18.2638:  88%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a  | 44/50 [00:28<00:02,  2.37it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:21,752] Trial 44 finished with value: 18.8316123467822 and parameters: {'n_estimators': 86, 'max_depth': 7, 'min_samples_split': 3, 'max_features': 0.6276028180214744}. Best is trial 37 with value: 18.263777526566706.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 37. Best value: 18.2638:  88%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a  | 44/50 [00:29<00:02,  2.37it/s]\rBest trial: 37. Best value: 18.2638:  88%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258a  | 44/50 [00:29<00:02,  2.37it/s]\rBest trial: 37. Best value: 18.2638:  90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f | 45/50 [00:29<00:02,  2.30it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:22,602] Trial 45 finished with value: 18.991172727340356 and parameters: {'n_estimators': 151, 'max_depth': 11, 'min_samples_split': 3, 'max_features': 0.934818506818788}. Best is trial 37 with value: 18.263777526566706.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 37. Best value: 18.2638:  90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f | 45/50 [00:30<00:02,  2.30it/s]\rBest trial: 37. Best value: 18.2638:  90%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258f | 45/50 [00:30<00:02,  2.30it/s]\rBest trial: 37. Best value: 18.2638:  92%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c | 46/50 [00:30<00:02,  1.79it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:22,954] Trial 46 finished with value: 18.73431055264323 and parameters: {'n_estimators': 60, 'max_depth': 10, 'min_samples_split': 2, 'max_features': 0.8771120063896288}. Best is trial 37 with value: 18.263777526566706.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 37. Best value: 18.2638:  92%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c | 46/50 [00:30<00:02,  1.79it/s]\rBest trial: 37. Best value: 18.2638:  92%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258c | 46/50 [00:30<00:02,  1.79it/s]\rBest trial: 37. Best value: 18.2638:  94%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589 | 47/50 [00:30<00:01,  2.01it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:23,575] Trial 47 finished with value: 18.9615686308754 and parameters: {'n_estimators': 115, 'max_depth': 12, 'min_samples_split': 4, 'max_features': 0.7455243553277289}. Best is trial 37 with value: 18.263777526566706.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 37. Best value: 18.2638:  94%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589 | 47/50 [00:31<00:01,  2.01it/s]\rBest trial: 37. Best value: 18.2638:  94%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2589 | 47/50 [00:31<00:01,  2.01it/s]\rBest trial: 37. Best value: 18.2638:  96%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e| 48/50 [00:31<00:01,  1.87it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:23,982] Trial 48 finished with value: 18.57817914524405 and parameters: {'n_estimators': 71, 'max_depth': 13, 'min_samples_split': 2, 'max_features': 0.8017939110492193}. Best is trial 37 with value: 18.263777526566706.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 37. Best value: 18.2638:  96%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e| 48/50 [00:31<00:01,  1.87it/s]\rBest trial: 37. Best value: 18.2638:  96%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e| 48/50 [00:31<00:01,  1.87it/s]\rBest trial: 37. Best value: 18.2638:  98%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b| 49/50 [00:31<00:00,  2.02it/s]\r                                                                                            \r",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "[I 2026-01-11 11:29:24,531] Trial 49 finished with value: 19.05158879668999 and parameters: {'n_estimators': 104, 'max_depth': 6, 'min_samples_split': 2, 'max_features': 0.7088783605947128}. Best is trial 37 with value: 18.263777526566706.\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "\rBest trial: 37. Best value: 18.2638:  98%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b| 49/50 [00:32<00:00,  2.02it/s]\rBest trial: 37. Best value: 18.2638:  98%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b| 49/50 [00:32<00:00,  2.02it/s]\rBest trial: 37. Best value: 18.2638: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 50/50 [00:32<00:00,  1.95it/s]\rBest trial: 37. Best value: 18.2638: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 50/50 [00:32<00:00,  1.56it/s]\n",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Phase 5 (RF+Optuna) Best CV RMSE: 18.2638\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "cbe780b01b0f572d91b476dbbaea6352",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ecfG",
+      "code_hash": "608fae6e56103e6abe450dbd585246ad",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">\u63d0\u51fa\u30d5\u30a1\u30a4\u30eb(v4)\u3092\u4f5c\u6210\u3057\u307e\u3057\u305f: <code>/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento2/data/submission_v4.csv</code></span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Pvdt",
+      "code_hash": "e5a1a55bc4eba93075a8489d7b96b103",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
+      "code_hash": "2601feb4c0c28f79eaf46fe7064879b5",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">\u63d0\u51fa\u30d5\u30a1\u30a4\u30eb(v5)\u3092\u4f5c\u6210\u3057\u307e\u3057\u305f: <code>/Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento2/data/submission_v5.csv</code></span></span>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}

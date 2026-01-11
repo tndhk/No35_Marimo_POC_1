@@ -23,10 +23,12 @@ def _():
     from sklearn.metrics import mean_squared_error
     import warnings
     warnings.filterwarnings('ignore')
+    import optuna
+    optuna.logging.set_verbosity(optuna.logging.WARNING)
     return (mo, pl, pd, alt, Path, np, lgb, re,
             TimeSeriesSplit, LinearRegression, Ridge,
             DecisionTreeRegressor, RandomForestRegressor,
-            mean_squared_error)
+            mean_squared_error, optuna)
 
 
 @app.cell
@@ -118,6 +120,22 @@ def _(df_train, mo):
 
 
 @app.cell
+def _(df_train_pandas, alt):
+    # 目的変数yの分布（ヒストグラム）
+    chart_y_hist = alt.Chart(df_train_pandas).mark_bar().encode(
+        alt.X('y:Q', bin=alt.Bin(maxbins=30), title='販売数'),
+        alt.Y('count():Q', title='頻度'),
+        tooltip=['count():Q']
+    ).properties(
+        width=600,
+        height=300,
+        title='販売数の分布'
+    )
+    chart_y_hist
+    return chart_y_hist,
+
+
+@app.cell
 def _(df_train, pl):
     # 曜日別集計
     week_stats = (
@@ -163,6 +181,53 @@ def _(df_train, pl):
     )
     weather_stats
     return weather_stats,
+
+
+@app.cell
+def _(df_train, pl, alt):
+    # 相関行列ヒートマップ
+    numeric_cols = ['y', 'soldout', 'kcal', 'payday', 'temperature']
+    
+    # 数値変換とNaN除去
+    df_corr = df_train.select([
+        pl.col('y'),
+        pl.col('soldout').fill_null(0),
+        pl.col('kcal').fill_null(pl.col('kcal').median()),
+        pl.col('payday').fill_null(0),
+        pl.col('temperature').cast(pl.Float64).fill_null(pl.col('temperature').cast(pl.Float64).median())
+    ]).to_pandas()
+    
+    corr_matrix = df_corr.corr()
+    
+    # 相関行列をlong形式に変換
+    corr_data = corr_matrix.reset_index().melt(id_vars='index')
+    corr_data.columns = ['var1', 'var2', 'correlation']
+    
+    chart_corr = alt.Chart(corr_data).mark_rect().encode(
+        x=alt.X('var1:N', title=''),
+        y=alt.Y('var2:N', title=''),
+        color=alt.Color('correlation:Q', scale=alt.Scale(scheme='redblue', domain=[-1, 1]), title='相関係数'),
+        tooltip=['var1:N', 'var2:N', alt.Tooltip('correlation:Q', format='.3f')]
+    ).properties(
+        width=400,
+        height=400,
+        title='相関行列ヒートマップ'
+    )
+    
+    # 相関係数の値をテキストで表示
+    chart_corr_text = alt.Chart(corr_data).mark_text(fontSize=12).encode(
+        x='var1:N',
+        y='var2:N',
+        text=alt.Text('correlation:Q', format='.2f'),
+        color=alt.condition(
+            alt.datum.correlation > 0.5,
+            alt.value('white'),
+            alt.value('black')
+        )
+    )
+    
+    chart_corr + chart_corr_text
+    return chart_corr,
 
 
 # ===== グループC: 可視化 =====
@@ -382,7 +447,7 @@ def _(pd, np, re):
         df_fe['day'] = df_fe['datetime'].dt.day
         df_fe['dayofweek'] = df_fe['datetime'].dt.dayofweek
         df_fe['weekofyear'] = df_fe['datetime'].dt.isocalendar().week.astype(int)
-        
+
         # 月初・月ハーフ・月末フラグ
         df_fe['is_beginning_of_month'] = (df_fe['day'] <= 10).astype(int)
         df_fe['is_middle_of_month'] = ((df_fe['day'] > 10) & (df_fe['day'] <= 20)).astype(int)
@@ -397,7 +462,7 @@ def _(pd, np, re):
         weather_categorical = pd.Categorical(df_fe['weather'], categories=weather_categories)
         weather_dummies = pd.get_dummies(weather_categorical, prefix='weather')
         df_fe = pd.concat([df_fe, weather_dummies], axis=1)
-        
+
         # メニューキーワード抽出
         df_fe = extract_menu_keywords(df_fe, 'name')
 
@@ -416,6 +481,54 @@ def _(pd, np, re):
         df_fe['payday'] = df_fe['payday'].fillna(0).astype(float)
         df_fe['event'] = df_fe['event'].notna().astype(int)
         df_fe['remarks'] = df_fe['remarks'].notna().astype(int)
+
+        # ===== 新規特徴量 =====
+
+        # 交互作用特徴量
+        df_fe['week_month'] = df_fe['dayofweek'] * df_fe['month']
+        df_fe['week_payday'] = df_fe['dayofweek'] * df_fe['payday']
+        df_fe['temp_month'] = df_fe['temperature'] * df_fe['month']
+
+        # 金曜カレーフラグ（金曜日でカレーメニュー）
+        df_fe['is_friday_curry'] = (
+            (df_fe['dayofweek'] == 4) &
+            (df_fe['name'].str.contains('カレー', na=False))
+        ).astype(int)
+
+        # 悪天候フラグ
+        df_fe['is_bad_weather'] = df_fe['weather'].isin(['雨', '雪', '雷電']).astype(int)
+
+        # 悪天候×低温
+        df_fe['is_bad_weather_cold'] = (
+            (df_fe['is_bad_weather'] == 1) &
+            (df_fe['temperature'] < 15)
+        ).astype(int)
+
+        # 季節フラグ
+        df_fe['is_summer'] = df_fe['month'].isin([7, 8]).astype(int)
+        df_fe['is_winter'] = df_fe['month'].isin([12, 1, 2]).astype(int)
+
+        # お楽しみメニューフラグ
+        df_fe['is_special_menu'] = df_fe['remarks'].apply(
+            lambda x: 1 if 'お楽しみ' in str(x) or 'スペシャル' in str(x) else 0
+        ) if 'y' in df_fe.columns else 0  # 訓練データのみ
+
+        # 時系列特徴量の計算（yが存在する場合）
+        if 'y' in df_fe.columns:
+            df_fe['lag_1'] = df_fe['y'].shift(1)
+            df_fe['lag_5'] = df_fe['y'].shift(5)
+            df_fe['rolling_mean_5'] = df_fe['y'].shift(1).rolling(window=5, min_periods=1).mean()
+            df_fe['rolling_mean_10'] = df_fe['y'].shift(1).rolling(window=10, min_periods=1).mean()
+            df_fe['rolling_std_5'] = df_fe['y'].shift(1).rolling(window=5, min_periods=1).std()
+            df_fe['diff_1'] = df_fe['y'].diff(1)
+        else:
+            # テストデータ（yなし）では、NaNで埋める（後でpredict_recursive内で計算）
+            df_fe['lag_1'] = np.nan
+            df_fe['lag_5'] = np.nan
+            df_fe['rolling_mean_5'] = np.nan
+            df_fe['rolling_mean_10'] = np.nan
+            df_fe['rolling_std_5'] = np.nan
+            df_fe['diff_1'] = np.nan
 
         return df_fe
 
@@ -436,6 +549,11 @@ def _(df_train, df_test, create_features, pd):
     # 作成された特徴量のカラム一覧
     feature_cols = [col for col in df_train_fe.columns
                    if col not in ['datetime', 'y', 'week', 'name', 'weather', 'remarks']]
+
+    # 時系列特徴量を明示的に確認
+    timeseries_features = ['lag_1', 'lag_5', 'rolling_mean_5', 'rolling_mean_10', 'rolling_std_5', 'diff_1']
+    print(f"使用特徴量数: {len(feature_cols)}")
+    print(f"時系列特徴量: {[f for f in timeseries_features if f in feature_cols]}")
 
     return df_train_fe, df_test_fe, feature_cols, train_kcal_median, train_temp_median
 
@@ -471,7 +589,7 @@ def _(
     tscv = TimeSeriesSplit(n_splits=n_splits)
 
     # LightGBMパラメータ
-    params = {
+    cv_params = {
         'objective': 'regression',
         'metric': 'rmse',
         'boosting_type': 'gbdt',
@@ -498,7 +616,7 @@ def _(
         X_train_fold, X_val_fold = X.iloc[train_index], X.iloc[val_index]
         y_train_fold, y_val_fold = y.iloc[train_index], y.iloc[val_index]
 
-        model = lgb.LGBMRegressor(**params)
+        model = lgb.LGBMRegressor(**cv_params)
         
         # LightGBMのコールバックを使用して早期終了などを制御
         callbacks = [
@@ -538,21 +656,85 @@ def _(
 
 
 @app.cell
-def _():
-    # 旧モデル（線形回帰・Ridge）のセルは削除されました
-    return
+def _(mo):
+    # Optuna最適化の制御UI
+    run_optuna = mo.ui.switch(value=False, label="Optunaで最適化を実行")
+    n_trials_slider = mo.ui.slider(10, 100, value=30, step=10, label="試行回数")
+    mo.hstack([run_optuna, n_trials_slider])
+    return run_optuna, n_trials_slider
 
 
 @app.cell
-def _():
-    # 旧モデル（決定木・RF）のセルは削除されました
-    return
+def _(
+    run_optuna,
+    n_trials_slider,
+    df_train_fe,
+    feature_cols,
+    lgb,
+    TimeSeriesSplit,
+    mean_squared_error,
+    np,
+    optuna,
+    mo
+):
+    # Optuna最適化（スイッチがONの場合のみ実行）
+    if run_optuna.value:
+        X_opt = df_train_fe[feature_cols]
+        y_opt = df_train_fe['y']
+        tscv_opt = TimeSeriesSplit(n_splits=5)
 
+        def objective(trial):
+            params = {
+                'objective': 'regression',
+                'metric': 'rmse',
+                'boosting_type': 'gbdt',
+                'n_estimators': trial.suggest_int('n_estimators', 500, 1500),
+                'learning_rate': trial.suggest_float('learning_rate', 0.01, 0.1),
+                'max_depth': trial.suggest_int('max_depth', 3, 10),
+                'num_leaves': trial.suggest_int('num_leaves', 15, 63),
+                'min_child_samples': trial.suggest_int('min_child_samples', 10, 50),
+                'feature_fraction': trial.suggest_float('feature_fraction', 0.6, 1.0),
+                'bagging_fraction': trial.suggest_float('bagging_fraction', 0.6, 1.0),
+                'bagging_freq': trial.suggest_int('bagging_freq', 1, 10),
+                'verbosity': -1,
+                'random_state': 42
+            }
 
-@app.cell
-def _():
-    # 旧モデル（GBR）のセルは削除されました
-    return
+            cv_scores_opt = []
+            for train_idx, val_idx in tscv_opt.split(X_opt):
+                X_tr, X_val = X_opt.iloc[train_idx], X_opt.iloc[val_idx]
+                y_tr, y_val = y_opt.iloc[train_idx], y_opt.iloc[val_idx]
+
+                model = lgb.LGBMRegressor(**params)
+                model.fit(
+                    X_tr, y_tr,
+                    eval_set=[(X_val, y_val)],
+                    callbacks=[
+                        lgb.early_stopping(50, verbose=False),
+                        lgb.log_evaluation(0)
+                    ]
+                )
+                pred = model.predict(X_val)
+                cv_scores_opt.append(np.sqrt(mean_squared_error(y_val, pred)))
+            return np.mean(cv_scores_opt)
+
+        study = optuna.create_study(direction='minimize')
+        study.optimize(objective, n_trials=n_trials_slider.value, show_progress_bar=True)
+
+        best_params = study.best_params
+        best_rmse = study.best_value
+
+        mo.md(f"""
+        ### Optuna 最適化結果
+        - 試行回数: {n_trials_slider.value}
+        - ベストRMSE: {best_rmse:.4f}
+        - ベストパラメータ: {best_params}
+        """)
+    else:
+        best_params = None
+        mo.md("Optunaスイッチをオンにすると、ハイパーパラメータ最適化を実行します。")
+
+    return best_params,
 
 
 # ===== グループF: 予測と提出 =====
@@ -571,14 +753,14 @@ def _(overall_rmse, mo):
 
 
 @app.cell
-def _(X, y, lgb):
+def _(X, y, lgb, best_params, mo):
     # 全データでの再学習
-    # CVで良さそうなパラメータを使用（ここでは固定）
-    params = {
+    # Optunaで最適化した場合はbest_paramsを使用、そうでなければデフォルト
+    default_params = {
         'objective': 'regression',
         'metric': 'rmse',
         'boosting_type': 'gbdt',
-        'n_estimators': 1200, # 全データなので少し増やす
+        'n_estimators': 1200,
         'learning_rate': 0.05,
         'max_depth': 7,
         'num_leaves': 31,
@@ -590,23 +772,112 @@ def _(X, y, lgb):
         'random_state': 42
     }
 
-    final_model = lgb.LGBMRegressor(**params)
+    if best_params is not None:
+        # Optunaの結果を使用
+        final_params = {
+            'objective': 'regression',
+            'metric': 'rmse',
+            'boosting_type': 'gbdt',
+            'verbosity': -1,
+            'random_state': 42,
+            **best_params  # Optunaで最適化されたパラメータを上書き
+        }
+        mo.md("Optunaで最適化されたパラメータを使用して最終モデルを学習中...")
+    else:
+        final_params = default_params
+        mo.md("デフォルトパラメータを使用して最終モデルを学習中...")
+
+    final_model = lgb.LGBMRegressor(**final_params)
     final_model.fit(X, y)
-    
+
+    print(f"使用パラメータ: {final_params}")
+
     return final_model,
 
 
 @app.cell
-def _(df_test_fe, feature_cols, final_model):
-    # テストデータへの予測
-    X_test = df_test_fe[feature_cols]
+def _(final_model, feature_cols, alt, pd, mo):
+    # 特徴量重要度の可視化
+    importance_df = pd.DataFrame({
+        'feature': feature_cols,
+        'importance': final_model.feature_importances_
+    }).sort_values('importance', ascending=False).head(20)
 
-    test_predictions = final_model.predict(X_test)
+    chart_importance = alt.Chart(importance_df).mark_bar().encode(
+        x=alt.X('importance:Q', title='重要度'),
+        y=alt.Y('feature:N', sort='-x', title='特徴量'),
+        color=alt.Color('importance:Q', scale=alt.Scale(scheme='blues'), legend=None),
+        tooltip=['feature:N', 'importance:Q']
+    ).properties(
+        width=600,
+        height=500,
+        title='特徴量重要度 (Top 20)'
+    )
 
-    # 負の値を0にクリップ（販売数は0以上）
-    test_predictions = [max(0, pred) for pred in test_predictions]
+    mo.md("### 特徴量重要度分析")
+    chart_importance
+    return chart_importance,
 
-    return X_test, test_predictions
+
+@app.cell
+def _(np):
+    def predict_recursive(model, df_train_fe, df_test_fe, feature_cols):
+        """
+        テストデータを1日ずつ再帰的に予測
+        訓練データの最後のy値をバッファとして使い、
+        テストデータは予測値を次のラグ特徴量として使用
+        """
+        # 訓練データ末尾のyを取得（ラグ計算用バッファ）
+        y_buffer = df_train_fe['y'].tail(10).tolist()
+
+        predictions = []
+
+        for idx, row_data in df_test_fe.iterrows():
+            # 行をコピーして処理
+            row = row_data.copy()
+
+            # ラグ特徴量を動的に計算
+            if len(y_buffer) > 0:
+                row['lag_1'] = y_buffer[-1]
+            if len(y_buffer) >= 5:
+                row['lag_5'] = y_buffer[-5]
+            else:
+                row['lag_5'] = np.mean(y_buffer) if y_buffer else 0
+
+            # 移動平均と標準偏差
+            row['rolling_mean_5'] = np.mean(y_buffer[-5:]) if y_buffer else 0
+            row['rolling_mean_10'] = np.mean(y_buffer[-10:]) if y_buffer else 0
+            row['rolling_std_5'] = np.std(y_buffer[-5:]) if len(y_buffer) >= 2 else 0
+
+            # 差分特徴量
+            if len(y_buffer) >= 2:
+                row['diff_1'] = y_buffer[-1] - y_buffer[-2]
+            else:
+                row['diff_1'] = 0
+
+            # 予測を実行
+            X_single = row[feature_cols].values.reshape(1, -1)
+            pred = model.predict(X_single)[0]
+            pred = max(0, pred)  # 負の値をクリップ
+
+            predictions.append(pred)
+            y_buffer.append(pred)
+
+        return predictions
+
+    return predict_recursive,
+
+
+@app.cell
+def _(df_test_fe, feature_cols, df_train_fe, final_model, predict_recursive):
+    # テストデータへの予測（再帰的予測）
+    test_predictions = predict_recursive(final_model, df_train_fe, df_test_fe, feature_cols)
+
+    # 予測結果の確認
+    print(f"テスト予測数: {len(test_predictions)}")
+    print(f"予測値の範囲: {min(test_predictions):.2f} - {max(test_predictions):.2f}")
+
+    return test_predictions
 
 
 @app.cell
@@ -637,6 +908,53 @@ def _(df_test_fe, test_predictions, Path, pd, mo):
     submission_df.head(10)
 
     return submission_df, output_path
+
+
+@app.cell
+def _(df_test_fe, test_predictions, alt, pd, mo):
+    # 予測結果の時系列可視化
+    pred_viz_df = pd.DataFrame({
+        'datetime': df_test_fe['datetime'],
+        'predicted': test_predictions,
+        'week': df_test_fe['week']
+    })
+
+    chart_pred = alt.Chart(pred_viz_df).mark_line(
+        point=True, strokeWidth=2, color='steelblue'
+    ).encode(
+        x=alt.X('datetime:T', title='日付'),
+        y=alt.Y('predicted:Q', title='予測販売数', scale=alt.Scale(zero=False)),
+        tooltip=['datetime:T', 'predicted:Q', 'week:N']
+    ).properties(
+        width=800,
+        height=300,
+        title='テストデータ予測結果'
+    ).interactive()
+
+    mo.md("### 予測結果の可視化")
+    chart_pred
+    return chart_pred,
+
+
+@app.cell
+def _(test_predictions, np, mo):
+    # 予測結果のサマリー統計
+    pred_mean = np.mean(test_predictions)
+    pred_std = np.std(test_predictions)
+    pred_min = np.min(test_predictions)
+    pred_max = np.max(test_predictions)
+
+    mo.md(f"""
+    ### 予測結果サマリー
+    | 統計量 | 値 |
+    |--------|-----|
+    | 平均 | {pred_mean:.1f} 個 |
+    | 標準偏差 | {pred_std:.1f} |
+    | 最小 | {pred_min:.1f} 個 |
+    | 最大 | {pred_max:.1f} 個 |
+    | 予測日数 | {len(test_predictions)} 日 |
+    """)
+    return
 
 
 if __name__ == "__main__":
