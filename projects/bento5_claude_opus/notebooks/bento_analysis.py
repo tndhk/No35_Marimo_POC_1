@@ -609,6 +609,43 @@ def __(pd, np):
 
 
 @app.cell
+def __(pd):
+    # シンプル特徴量作成関数（0ベース再設計）
+    def create_features_simple(df, train_temp_median=None):
+        """
+        5特徴量のみのシンプル設計
+        - year除外（過学習リスク）
+        - soldout除外（ターゲットリーク）
+        """
+        df_fe = df.copy()
+        df_fe['datetime'] = pd.to_datetime(df_fe['datetime'])
+
+        # 5特徴量のみ
+        df_fe['month'] = df_fe['datetime'].dt.month
+        df_fe['dayofweek'] = df_fe['datetime'].dt.dayofweek
+
+        # 気温（欠損は訓練データ中央値で補完）
+        df_fe['temperature'] = pd.to_numeric(df_fe['temperature'], errors='coerce')
+        if train_temp_median is not None:
+            df_fe['temperature'] = df_fe['temperature'].fillna(train_temp_median)
+        else:
+            temp_median = df_fe['temperature'].median()
+            df_fe['temperature'] = df_fe['temperature'].fillna(temp_median)
+
+        # 悪天候フラグ
+        df_fe['is_bad_weather'] = df_fe['weather'].isin(['雨', '雪', '雷電']).astype(int)
+
+        # 特別メニューフラグ
+        df_fe['is_special_menu'] = df_fe['remarks'].apply(
+            lambda x: 1 if pd.notna(x) and ('お楽しみ' in str(x) or '料理長' in str(x)) else 0
+        )
+
+        return df_fe
+
+    return create_features_simple,
+
+
+@app.cell
 def __(df_train_pandas, df_test_pandas, create_features, mo):
     # 特徴量作成の実行
 
@@ -946,6 +983,184 @@ def __(overall_rmse, simple_overall_rmse, mo, pd):
     シンプルモデルの方が{'良い' if simple_overall_rmse < overall_rmse else '悪い'}結果
     """)
     return feature_comparison,
+
+
+@app.cell
+def __(mo):
+    # セクションヘッダー: 提出ファイル作成
+    mo.md("## 7. 提出ファイル作成")
+    return
+
+
+@app.cell
+def __(df_train_fe, df_test_fe, feature_cols, GradientBoostingRegressor, gb_params, Path, pd):
+    # 全訓練データでベストモデルを学習
+    final_model = GradientBoostingRegressor(**gb_params)
+    final_model.fit(df_train_fe[feature_cols].values, df_train_fe['y'].values)
+
+    # テストデータの予測
+    test_predictions = final_model.predict(df_test_fe[feature_cols].values)
+
+    # 日付フォーマット（ゼロ埋めなし）
+    def format_date_no_zero_pad(dt):
+        return f"{dt.year}-{dt.month}-{dt.day}"
+
+    submission_dates = df_test_fe['datetime'].apply(format_date_no_zero_pad)
+
+    # 提出データフレーム作成
+    submission_df = pd.DataFrame({
+        'datetime': submission_dates,
+        'y': test_predictions.round().astype(int)
+    })
+
+    # CSV出力（ヘッダーなし）
+    output_path = Path(__file__).parent.parent / "data" / "submission.csv"
+    submission_df.to_csv(output_path, index=False, header=False)
+
+    return final_model, test_predictions, submission_df, output_path
+
+
+@app.cell
+def __(submission_df, output_path, mo):
+    mo.md(f"""
+    ### 提出ファイル作成完了
+
+    - 出力先: `{output_path}`
+    - 予測件数: {len(submission_df)} 件
+    - 予測値範囲: {submission_df['y'].min()} 〜 {submission_df['y'].max()}
+
+    ### プレビュー（先頭5件）
+
+    {mo.ui.table(submission_df.head())}
+    """)
+    return
+
+
+@app.cell
+def __(mo):
+    # セクションヘッダー: シンプルモデルによる再予測
+    mo.md("""
+    ## 8. シンプルモデルによる再予測（0ベース再設計）
+
+    ### 問題点の修正
+    - year特徴量を除外（過学習リスク）
+    - soldout特徴量を除外（ターゲットリーク）
+    - 25特徴量 → 5特徴量に削減
+    - Ridge回帰で正則化
+    """)
+    return
+
+
+@app.cell
+def __(df_train_pandas, df_test_pandas, create_features_simple, pd, TimeSeriesSplit, mean_squared_error, np, mo):
+    # シンプル特徴量作成
+    from sklearn.linear_model import Ridge
+
+    # 訓練データの気温中央値を計算（データリーク防止）
+    train_temp_median_simple = pd.to_numeric(df_train_pandas['temperature'], errors='coerce').median()
+
+    # 特徴量作成
+    df_train_simple = create_features_simple(df_train_pandas)
+    df_test_simple = create_features_simple(df_test_pandas, train_temp_median_simple)
+
+    # 5特徴量のみ
+    simple_feature_cols = ['month', 'dayofweek', 'temperature', 'is_bad_weather', 'is_special_menu']
+
+    # Ridge回帰で交差検証
+    X_simple_ridge = df_train_simple[simple_feature_cols].values
+    y_simple_ridge = df_train_simple['y'].values
+
+    tscv_ridge = TimeSeriesSplit(n_splits=5)
+    ridge_cv_scores = []
+
+    for fold_ridge, (train_idx_ridge, val_idx_ridge) in enumerate(tscv_ridge.split(X_simple_ridge)):
+        X_train_ridge, X_val_ridge = X_simple_ridge[train_idx_ridge], X_simple_ridge[val_idx_ridge]
+        y_train_ridge, y_val_ridge = y_simple_ridge[train_idx_ridge], y_simple_ridge[val_idx_ridge]
+
+        model_ridge = Ridge(alpha=1.0, random_state=42)
+        model_ridge.fit(X_train_ridge, y_train_ridge)
+
+        y_pred_ridge = model_ridge.predict(X_val_ridge)
+        rmse_ridge = np.sqrt(mean_squared_error(y_val_ridge, y_pred_ridge))
+        ridge_cv_scores.append(rmse_ridge)
+
+    ridge_overall_rmse = np.mean(ridge_cv_scores)
+
+    mo.md(f"""
+    ### Ridge回帰（5特徴量）
+
+    特徴量:
+    - month（月）
+    - dayofweek（曜日）
+    - temperature（気温）
+    - is_bad_weather（悪天候フラグ）
+    - is_special_menu（特別メニューフラグ）
+
+    交差検証結果:
+
+    | Fold | RMSE |
+    |------|------|
+    | 1 | {ridge_cv_scores[0]:.2f} |
+    | 2 | {ridge_cv_scores[1]:.2f} |
+    | 3 | {ridge_cv_scores[2]:.2f} |
+    | 4 | {ridge_cv_scores[3]:.2f} |
+    | 5 | {ridge_cv_scores[4]:.2f} |
+    | 平均 | {ridge_overall_rmse:.2f} |
+    """)
+    return Ridge, train_temp_median_simple, df_train_simple, df_test_simple, simple_feature_cols, X_simple_ridge, y_simple_ridge, tscv_ridge, ridge_cv_scores, ridge_overall_rmse, model_ridge
+
+
+@app.cell
+def __(df_train_simple, df_test_simple, simple_feature_cols, Ridge, Path, pd):
+    # シンプルモデルで予測と提出ファイル生成
+
+    # 全訓練データでRidgeモデルを学習
+    final_model_simple = Ridge(alpha=1.0, random_state=42)
+    final_model_simple.fit(df_train_simple[simple_feature_cols].values, df_train_simple['y'].values)
+
+    # テストデータの予測
+    test_predictions_simple = final_model_simple.predict(df_test_simple[simple_feature_cols].values)
+
+    # 日付フォーマット（ゼロ埋めなし）
+    def format_date_no_zero_pad_simple(dt):
+        return f"{dt.year}-{dt.month}-{dt.day}"
+
+    submission_dates_simple = df_test_simple['datetime'].apply(format_date_no_zero_pad_simple)
+
+    # 提出データフレーム作成
+    submission_df_simple = pd.DataFrame({
+        'datetime': submission_dates_simple,
+        'y': test_predictions_simple.round().astype(int)
+    })
+
+    # CSV出力（ヘッダーなし）
+    output_path_simple = Path(__file__).parent.parent / "data" / "submission_simple.csv"
+    submission_df_simple.to_csv(output_path_simple, index=False, header=False)
+
+    return final_model_simple, test_predictions_simple, submission_df_simple, output_path_simple
+
+
+@app.cell
+def __(submission_df_simple, output_path_simple, ridge_overall_rmse, mo):
+    mo.md(f"""
+    ### シンプルモデル 提出ファイル作成完了
+
+    - 出力先: `{output_path_simple}`
+    - 予測件数: {len(submission_df_simple)} 件
+    - 予測値範囲: {submission_df_simple['y'].min()} 〜 {submission_df_simple['y'].max()}
+    - 交差検証RMSE: {ridge_overall_rmse:.2f}
+
+    ### プレビュー（先頭5件）
+
+    {mo.ui.table(submission_df_simple.head())}
+
+    ### 改善内容
+    - year特徴量を除外（過学習防止）
+    - soldout特徴量を除外（ターゲットリーク防止）
+    - 25特徴量 → 5特徴量に削減
+    - Ridge回帰による正則化
+    """)
+    return
 
 
 if __name__ == "__main__":

@@ -1,0 +1,3 @@
+Best Model: モデルC
+Validation RMSE: 15.2099
+Features: ['week_enc', 'weather_enc', 'temperature', 'precipitation_num', 'month', 'kcal_filled', 'is_otanoshimi', 'is_curry', 'is_donburi']
