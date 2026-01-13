@@ -309,5 +309,55 @@ def dataset_info(mo, X_train, y_train, X_test, feature_cols):
     return
 
 
+# ===== グループD: モデリング =====
+
+@app.cell
+def modeling_header(mo):
+    """モデリングのセクションヘッダー"""
+    mo.md("""
+    ## 4. モデリング - Ridge回帰
+    """)
+    return
+
+
+@app.cell
+def ridge_model(X_train, y_train, Ridge, TimeSeriesSplit, mean_squared_error, np):
+    """Ridge回帰モデルの訓練と時系列交差検証"""
+    # Ridge回帰モデル
+    tscv = TimeSeriesSplit(n_splits=5)
+    ridge = Ridge(alpha=1.0)
+
+    ridge_cv_scores = []
+    for train_idx, val_idx in tscv.split(X_train):
+        X_tr, X_val = X_train.iloc[train_idx], X_train.iloc[val_idx]
+        y_tr, y_val = y_train.iloc[train_idx], y_train.iloc[val_idx]
+
+        ridge.fit(X_tr, y_tr)
+        y_pred = ridge.predict(X_val)
+        rmse = np.sqrt(mean_squared_error(y_val, y_pred))
+        ridge_cv_scores.append(rmse)
+
+    # 全訓練データで再学習
+    ridge.fit(X_train, y_train)
+
+    return ridge, ridge_cv_scores, tscv
+
+
+@app.cell
+def ridge_results(mo, ridge_cv_scores, np):
+    """Ridge回帰の交差検証結果を表示"""
+    ridge_mean_rmse = np.mean(ridge_cv_scores)
+    ridge_std_rmse = np.std(ridge_cv_scores)
+
+    mo.md(f"""
+    ### Ridge回帰の交差検証結果
+
+    - CV RMSE (平均): {ridge_mean_rmse:.2f}
+    - CV RMSE (標準偏差): {ridge_std_rmse:.2f}
+    - 各Fold: {[f"{s:.2f}" for s in ridge_cv_scores]}
+    """)
+    return ridge_mean_rmse, ridge_std_rmse
+
+
 if __name__ == "__main__":
     app.run()
