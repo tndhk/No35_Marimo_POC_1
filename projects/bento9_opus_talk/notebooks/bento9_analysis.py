@@ -37,7 +37,7 @@ def load_train_data(Path, pl):
     """訓練データの読み込み"""
     # 訓練データロード
     data_path_train = Path(__file__).parent.parent / "data" / "bento_train.csv"
-    df_train = pl.read_csv(data_path_train)
+    df_train = pl.read_csv(data_path_train, null_values=["--"])
     return df_train, data_path_train
 
 
@@ -46,7 +46,7 @@ def load_test_data(Path, pl):
     """テストデータの読み込み"""
     # テストデータロード
     data_path_test = Path(__file__).parent.parent / "data" / "bento_test.csv"
-    df_test = pl.read_csv(data_path_test)
+    df_test = pl.read_csv(data_path_test, null_values=["--"])
     return df_test, data_path_test
 
 
