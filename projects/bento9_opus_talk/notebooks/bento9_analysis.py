@@ -196,5 +196,42 @@ def holiday_features(df_train_fe, df_test_fe, pl, jpholiday, datetime):
     return df_train_fe2, df_test_fe2, is_holiday
 
 
+@app.cell
+def categorical_encoding(df_train_fe2, df_test_fe2, pl):
+    """曜日と天気をカテゴリカルエンコーディング"""
+    # カテゴリカル特徴量のエンコーディング
+    week_map = {"月": 0, "火": 1, "水": 2, "木": 3, "金": 4, "土": 5, "日": 6}
+    weather_map = {"快晴": 0, "晴れ": 1, "薄曇": 2, "曇": 3, "雨": 4}
+
+    df_train_fe3 = df_train_fe2.with_columns([
+        pl.col("week").replace(week_map).alias("week_encoded"),
+        pl.col("weather").replace(weather_map).alias("weather_encoded")
+    ])
+
+    df_test_fe3 = df_test_fe2.with_columns([
+        pl.col("week").replace(week_map).alias("week_encoded"),
+        pl.col("weather").replace(weather_map).alias("weather_encoded")
+    ])
+
+    return df_train_fe3, df_test_fe3, week_map, weather_map
+
+
+@app.cell
+def numeric_features(df_train_fe3, df_test_fe3, pl):
+    """soldoutとpaydayを数値型に変換"""
+    # soldout, paydayは既に数値なので確認
+    df_train_fe4 = df_train_fe3.with_columns([
+        pl.col("soldout").cast(pl.Int64),
+        pl.col("payday").fill_null(0).cast(pl.Int64)
+    ])
+
+    df_test_fe4 = df_test_fe3.with_columns([
+        pl.col("soldout").cast(pl.Int64),
+        pl.col("payday").fill_null(0).cast(pl.Int64)
+    ])
+
+    return df_train_fe4, df_test_fe4
+
+
 if __name__ == "__main__":
     app.run()
