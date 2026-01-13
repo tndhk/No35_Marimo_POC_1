@@ -536,7 +536,7 @@ def feature_importance(lgb_model, feature_cols, pl, alt):
 
 
 @app.cell
-def test_prediction(lgb_model, X_test, np):
+def test_prediction(lgb_model, X_test, np, mo):
     """LightGBMモデルでテストデータの予測を実行"""
     mo.md("""
     ## 7. 予測とSubmission生成
@@ -553,16 +553,22 @@ def test_prediction(lgb_model, X_test, np):
 
 @app.cell
 def submission_generation(df_test_filled, y_pred, Path, pl, pd):
-    """Submission CSVファイルを生成"""
-    # Submission DataFrame作成
-    submission_df = pl.DataFrame({
-        "datetime": df_test_filled["datetime"],
-        "y": y_pred
+    """submission.csvを生成（yyyy-m-d形式、ヘッダーなし）"""
+    # submission.csv生成
+    # 日付フォーマット: yyyy-m-d（1桁の日は0埋めしない）
+    dates = df_test_filled["datetime"].to_list()
+
+    # y値を整数に丸める
+    predictions_int = [int(round(p)) for p in y_pred]
+
+    submission_df = pd.DataFrame({
+        "datetime": dates,
+        "y": predictions_int
     })
 
-    # CSV保存
-    submission_path = Path(__file__).parent.parent / "data" / "submission.csv"
-    submission_df.write_csv(submission_path)
+    # 保存（ヘッダーなし）
+    submission_path = Path(__file__).parent.parent / "submission.csv"
+    submission_df.to_csv(submission_path, index=False, header=False)
 
     return submission_df, submission_path
 
