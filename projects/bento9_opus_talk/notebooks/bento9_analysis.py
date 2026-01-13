@@ -66,5 +66,46 @@ def title(mo, df_train, df_test):
     return
 
 
+# ===== グループB: 基本EDA =====
+
+@app.cell
+def eda_header(mo):
+    """基本統計とデータ理解のセクションヘッダー"""
+    mo.md("""
+    ## 1. 基本統計とデータ理解
+    """)
+    return
+
+
+@app.cell
+def basic_stats(df_train):
+    """訓練データの基本統計量を表示"""
+    # 基本統計量
+    train_stats = df_train.describe()
+    train_stats
+    return train_stats,
+
+
+@app.cell
+def null_analysis(df_train, pl, mo):
+    """訓練データの欠損値を分析"""
+    # 欠損値確認
+    null_counts = df_train.null_count()
+    total_rows = df_train.shape[0]
+
+    null_info = pl.DataFrame({
+        "カラム": list(null_counts.columns),
+        "欠損数": [null_counts[col][0] for col in null_counts.columns],
+        "欠損率(%)": [
+            round(null_counts[col][0] * 100 / total_rows, 2)
+            for col in null_counts.columns
+        ]
+    }).filter(pl.col("欠損数") > 0)
+
+    mo.md("### 欠損値確認")
+    null_info
+    return null_info,
+
+
 if __name__ == "__main__":
     app.run()
