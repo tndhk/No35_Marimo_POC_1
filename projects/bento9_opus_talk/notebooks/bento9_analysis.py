@@ -233,5 +233,50 @@ def numeric_features(df_train_fe3, df_test_fe3, pl):
     return df_train_fe4, df_test_fe4
 
 
+@app.cell
+def missing_value_imputation(df_train_fe4, df_test_fe4, pl):
+    """訓練データの統計量を使用して欠損値を補完（データリーク防止）"""
+    # 欠損値補完（訓練データの統計量を使用）
+    # データリーク防止: テストデータの補完には必ず訓練データの中央値を使用
+
+    # 訓練データで中央値を計算
+    train_kcal_median = df_train_fe4["kcal"].median()
+    train_precipitation_median = df_train_fe4["precipitation"].median()
+    train_temp_median = df_train_fe4["temperature"].median()
+
+    # 訓練データの欠損値補完
+    df_train_filled = df_train_fe4.with_columns([
+        pl.col("kcal").fill_null(train_kcal_median),
+        pl.col("precipitation").fill_null(train_precipitation_median),
+        pl.col("temperature").fill_null(train_temp_median)
+    ])
+
+    # テストデータの欠損値補完（訓練データの統計量を使用）
+    df_test_filled = df_test_fe4.with_columns([
+        pl.col("kcal").fill_null(train_kcal_median),
+        pl.col("precipitation").fill_null(train_precipitation_median),
+        pl.col("temperature").fill_null(train_temp_median)
+    ])
+
+    return (df_train_filled, df_test_filled,
+            train_kcal_median, train_precipitation_median, train_temp_median)
+
+
+@app.cell
+def verify_no_nulls(df_train_filled, df_test_filled, mo):
+    """欠損値処理の確認"""
+    # 欠損値処理確認
+    train_nulls_after = df_train_filled.null_count().sum_horizontal()[0]
+    test_nulls_after = df_test_filled.null_count().sum_horizontal()[0]
+
+    mo.md(f"""
+    ### 欠損値処理後の確認
+
+    - 訓練データ欠損数: {train_nulls_after}
+    - テストデータ欠損数: {test_nulls_after}
+    """)
+    return train_nulls_after, test_nulls_after
+
+
 if __name__ == "__main__":
     app.run()
