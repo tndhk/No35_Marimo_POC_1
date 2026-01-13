@@ -143,5 +143,58 @@ def week_analysis(df_train, alt):
     return chart_week, week_order
 
 
+# ===== グループC: 特徴量エンジニアリング =====
+
+@app.cell
+def feature_engineering_header(mo):
+    """特徴量エンジニアリングのセクションヘッダー"""
+    mo.md("""
+    ## 2. 特徴量エンジニアリング
+    """)
+    return
+
+
+@app.cell
+def date_features(df_train, df_test, pl, jpholiday, datetime):
+    """日付から年月日・曜日を抽出"""
+    # 日付特徴量
+    def add_date_features(df):
+        return df.with_columns([
+            pl.col("datetime").str.strptime(pl.Date, "%Y-%m-%d").alias("date"),
+        ]).with_columns([
+            pl.col("date").dt.year().alias("year"),
+            pl.col("date").dt.month().alias("month"),
+            pl.col("date").dt.day().alias("day"),
+            pl.col("date").dt.weekday().alias("weekday"),  # 0=月, 6=日
+        ])
+
+    df_train_fe = add_date_features(df_train)
+    df_test_fe = add_date_features(df_test)
+
+    return df_train_fe, df_test_fe, add_date_features
+
+
+@app.cell
+def holiday_features(df_train_fe, df_test_fe, pl, jpholiday, datetime):
+    """祝日フラグを追加"""
+    # 祝日フラグ
+    def is_holiday(date_str):
+        try:
+            dt = datetime.strptime(date_str, "%Y-%m-%d")
+            return 1 if jpholiday.is_holiday(dt) else 0
+        except:
+            return 0
+
+    df_train_fe2 = df_train_fe.with_columns([
+        pl.col("datetime").map_elements(is_holiday, return_dtype=pl.Int64).alias("is_holiday")
+    ])
+
+    df_test_fe2 = df_test_fe.with_columns([
+        pl.col("datetime").map_elements(is_holiday, return_dtype=pl.Int64).alias("is_holiday")
+    ])
+
+    return df_train_fe2, df_test_fe2, is_holiday
+
+
 if __name__ == "__main__":
     app.run()
