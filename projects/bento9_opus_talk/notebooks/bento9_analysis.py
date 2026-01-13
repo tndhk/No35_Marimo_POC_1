@@ -107,5 +107,41 @@ def null_analysis(df_train, pl, mo):
     return null_info,
 
 
+@app.cell
+def target_distribution(df_train, alt):
+    """目的変数yの分布をヒストグラムで可視化"""
+    # 目的変数yの分布
+    chart_y = alt.Chart(df_train.to_pandas()).mark_bar().encode(
+        alt.X("y:Q", bin=alt.Bin(maxbins=30), title="販売数"),
+        alt.Y("count()", title="頻度"),
+        tooltip=["count()"]
+    ).properties(
+        width=600,
+        height=300,
+        title="販売数（y）の分布"
+    )
+    chart_y
+    return chart_y,
+
+
+@app.cell
+def week_analysis(df_train, alt):
+    """曜日別販売数の分布をボックスプロットで可視化"""
+    # 曜日別販売数
+    week_order = ["月", "火", "水", "木", "金", "土", "日"]
+
+    chart_week = alt.Chart(df_train.to_pandas()).mark_boxplot().encode(
+        alt.X("week:N", title="曜日", sort=week_order),
+        alt.Y("y:Q", title="販売数"),
+        tooltip=["week", "y"]
+    ).properties(
+        width=600,
+        height=300,
+        title="曜日別販売数の分布"
+    )
+    chart_week
+    return chart_week, week_order
+
+
 if __name__ == "__main__":
     app.run()
