@@ -359,5 +359,126 @@ def ridge_results(mo, ridge_cv_scores, np):
     return ridge_mean_rmse, ridge_std_rmse
 
 
+@app.cell
+def lightgbm_header(mo):
+    """LightGBMのセクションヘッダー"""
+    mo.md("""
+    ## 5. モデリング - LightGBM
+    """)
+    return
+
+
+@app.cell
+def lightgbm_model(X_train, y_train, X_test, lgb, TimeSeriesSplit, mean_squared_error, np, optuna):
+    """LightGBMモデルの訓練とOptunaによるハイパーパラメータ最適化"""
+
+    # Optunaによるハイパーパラメータチューニング
+    def objective(trial):
+        params = {
+            'objective': 'regression',
+            'metric': 'rmse',
+            'verbosity': -1,
+            'boosting_type': 'gbdt',
+            'learning_rate': trial.suggest_float('learning_rate', 0.01, 0.1),
+            'num_leaves': trial.suggest_int('num_leaves', 20, 100),
+            'max_depth': trial.suggest_int('max_depth', 3, 10),
+            'min_child_samples': trial.suggest_int('min_child_samples', 10, 50),
+            'subsample': trial.suggest_float('subsample', 0.6, 1.0),
+            'colsample_bytree': trial.suggest_float('colsample_bytree', 0.6, 1.0),
+            'reg_alpha': trial.suggest_float('reg_alpha', 0.0, 1.0),
+            'reg_lambda': trial.suggest_float('reg_lambda', 0.0, 1.0),
+        }
+
+        tscv = TimeSeriesSplit(n_splits=5)
+        cv_scores = []
+
+        for train_idx, val_idx in tscv.split(X_train):
+            X_tr, X_val = X_train.iloc[train_idx], X_train.iloc[val_idx]
+            y_tr, y_val = y_train.iloc[train_idx], y_train.iloc[val_idx]
+
+            train_data = lgb.Dataset(X_tr, label=y_tr)
+            val_data = lgb.Dataset(X_val, label=y_val, reference=train_data)
+
+            model = lgb.train(
+                params,
+                train_data,
+                num_boost_round=1000,
+                valid_sets=[val_data],
+                callbacks=[lgb.early_stopping(stopping_rounds=50, verbose=False)]
+            )
+
+            y_pred = model.predict(X_val, num_iteration=model.best_iteration)
+            rmse = np.sqrt(mean_squared_error(y_val, y_pred))
+            cv_scores.append(rmse)
+
+        return np.mean(cv_scores)
+
+    # 最適化実行
+    study = optuna.create_study(direction='minimize')
+    study.optimize(objective, n_trials=50)
+
+    best_params = study.best_params
+    best_params.update({
+        'objective': 'regression',
+        'metric': 'rmse',
+        'verbosity': -1,
+        'boosting_type': 'gbdt'
+    })
+
+    # 最良パラメータで再学習
+    tscv = TimeSeriesSplit(n_splits=5)
+    lgb_cv_scores = []
+
+    for train_idx, val_idx in tscv.split(X_train):
+        X_tr, X_val = X_train.iloc[train_idx], X_train.iloc[val_idx]
+        y_tr, y_val = y_train.iloc[train_idx], y_train.iloc[val_idx]
+
+        train_data = lgb.Dataset(X_tr, label=y_tr)
+        val_data = lgb.Dataset(X_val, label=y_val, reference=train_data)
+
+        model = lgb.train(
+            best_params,
+            train_data,
+            num_boost_round=1000,
+            valid_sets=[val_data],
+            callbacks=[lgb.early_stopping(stopping_rounds=50, verbose=False)]
+        )
+
+        y_pred = model.predict(X_val, num_iteration=model.best_iteration)
+        rmse = np.sqrt(mean_squared_error(y_val, y_pred))
+        lgb_cv_scores.append(rmse)
+
+    # 全訓練データで最終モデルを訓練
+    train_data_full = lgb.Dataset(X_train, label=y_train)
+    lgb_model = lgb.train(
+        best_params,
+        train_data_full,
+        num_boost_round=1000
+    )
+
+    return lgb_model, lgb_cv_scores, best_params, study
+
+
+@app.cell
+def lightgbm_results(mo, lgb_cv_scores, best_params, np):
+    """LightGBMの交差検証結果を表示"""
+    lgb_mean_rmse = np.mean(lgb_cv_scores)
+    lgb_std_rmse = np.std(lgb_cv_scores)
+
+    params_str = "\n".join([f"  - {k}: {v}" for k, v in best_params.items() if k not in ['objective', 'metric', 'verbosity', 'boosting_type']])
+
+    mo.md(f"""
+    ### LightGBMの交差検証結果
+
+    - CV RMSE (平均): {lgb_mean_rmse:.2f}
+    - CV RMSE (標準偏差): {lgb_std_rmse:.2f}
+    - 各Fold: {[f"{s:.2f}" for s in lgb_cv_scores]}
+
+    最適化されたハイパーパラメータ:
+{params_str}
+    """)
+    return lgb_mean_rmse, lgb_std_rmse
+
+
 if __name__ == "__main__":
     app.run()
