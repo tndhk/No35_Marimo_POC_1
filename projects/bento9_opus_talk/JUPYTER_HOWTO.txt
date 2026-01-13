@@ -1,0 +1,13 @@
+
+# Jupyter Notebookを起動するには、以下のコマンドを実行してください：
+
+cd /Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento9_opus_talk
+source ../../.venv/bin/activate
+jupyter notebook
+
+# または JupyterLab を使用する場合：
+
+cd /Users/takahiko_tsunoda/work/dev/No35_marimo_poc1/projects/bento9_opus_talk
+source ../../.venv/bin/activate
+jupyter lab
+
