@@ -480,5 +480,60 @@ def lightgbm_results(mo, lgb_cv_scores, best_params, np):
     return lgb_mean_rmse, lgb_std_rmse
 
 
+@app.cell
+def model_comparison(mo, ridge_mean_rmse, lgb_mean_rmse, pl, alt):
+    """モデル性能比較の可視化"""
+    mo.md("""
+    ## 6. モデル比較
+    """)
+
+    # モデル比較用データフレーム
+    comparison_df = pl.DataFrame({
+        "Model": ["Ridge", "LightGBM"],
+        "CV RMSE": [ridge_mean_rmse, lgb_mean_rmse]
+    })
+
+    # 比較チャート
+    comparison_chart = alt.Chart(comparison_df.to_pandas()).mark_bar().encode(
+        alt.X("Model:N", title="モデル"),
+        alt.Y("CV RMSE:Q", title="RMSE"),
+        alt.Color("Model:N", legend=None),
+        tooltip=["Model", alt.Tooltip("CV RMSE:Q", format=".2f")]
+    ).properties(
+        width=400,
+        height=300,
+        title="モデル性能比較（CV RMSE）"
+    )
+
+    comparison_chart
+    return comparison_df, comparison_chart
+
+
+@app.cell
+def feature_importance(lgb_model, feature_cols, pl, alt):
+    """LightGBMの特徴量重要度を可視化"""
+    # 特徴量重要度
+    importance = lgb_model.feature_importance(importance_type='gain')
+    importance_df = pl.DataFrame({
+        "Feature": feature_cols,
+        "Importance": importance
+    }).sort("Importance", descending=True)
+
+    # 重要度チャート
+    importance_chart = alt.Chart(importance_df.to_pandas()).mark_bar().encode(
+        alt.X("Importance:Q", title="重要度"),
+        alt.Y("Feature:N", title="特徴量", sort="-x"),
+        alt.Color("Importance:Q", legend=None, scale=alt.Scale(scheme="viridis")),
+        tooltip=["Feature", alt.Tooltip("Importance:Q", format=".2f")]
+    ).properties(
+        width=500,
+        height=400,
+        title="LightGBM特徴量重要度"
+    )
+
+    importance_chart
+    return importance_df, importance_chart
+
+
 if __name__ == "__main__":
     app.run()
