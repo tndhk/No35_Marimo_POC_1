@@ -535,5 +535,51 @@ def feature_importance(lgb_model, feature_cols, pl, alt):
     return importance_df, importance_chart
 
 
+@app.cell
+def test_prediction(lgb_model, X_test, np):
+    """LightGBMモデルでテストデータの予測を実行"""
+    mo.md("""
+    ## 7. 予測とSubmission生成
+    """)
+
+    # LightGBMで予測
+    y_pred = lgb_model.predict(X_test)
+
+    # 負の値を0にクリップ（販売数は負にならない）
+    y_pred = np.maximum(y_pred, 0)
+
+    return y_pred,
+
+
+@app.cell
+def submission_generation(df_test_filled, y_pred, Path, pl, pd):
+    """Submission CSVファイルを生成"""
+    # Submission DataFrame作成
+    submission_df = pl.DataFrame({
+        "datetime": df_test_filled["datetime"],
+        "y": y_pred
+    })
+
+    # CSV保存
+    submission_path = Path(__file__).parent.parent / "data" / "submission.csv"
+    submission_df.write_csv(submission_path)
+
+    return submission_df, submission_path
+
+
+@app.cell
+def submission_preview(mo, submission_df, submission_path):
+    """Submission内容のプレビュー"""
+    mo.md(f"""
+    ### Submission生成完了
+
+    ファイルパス: `{submission_path}`
+
+    最初の10行:
+    """)
+    submission_df.head(10)
+    return
+
+
 if __name__ == "__main__":
     app.run()
