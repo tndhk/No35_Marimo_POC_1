@@ -222,12 +222,12 @@ def numeric_features(df_train_fe3, df_test_fe3, pl):
     # soldout, paydayは既に数値なので確認
     df_train_fe4 = df_train_fe3.with_columns([
         pl.col("soldout").cast(pl.Int64),
-        pl.col("payday").fill_null(0).cast(pl.Int64)
+        pl.col("payday").fill_null(value=0).cast(pl.Int64)
     ])
 
     df_test_fe4 = df_test_fe3.with_columns([
         pl.col("soldout").cast(pl.Int64),
-        pl.col("payday").fill_null(0).cast(pl.Int64)
+        pl.col("payday").fill_null(value=0).cast(pl.Int64)
     ])
 
     return df_train_fe4, df_test_fe4
@@ -246,16 +246,16 @@ def missing_value_imputation(df_train_fe4, df_test_fe4, pl):
 
     # 訓練データの欠損値補完
     df_train_filled = df_train_fe4.with_columns([
-        pl.col("kcal").fill_null(train_kcal_median),
-        pl.col("precipitation").fill_null(train_precipitation_median),
-        pl.col("temperature").fill_null(train_temp_median)
+        pl.col("kcal").fill_null(value=train_kcal_median),
+        pl.col("precipitation").fill_null(value=train_precipitation_median),
+        pl.col("temperature").fill_null(value=train_temp_median)
     ])
 
     # テストデータの欠損値補完（訓練データの統計量を使用）
     df_test_filled = df_test_fe4.with_columns([
-        pl.col("kcal").fill_null(train_kcal_median),
-        pl.col("precipitation").fill_null(train_precipitation_median),
-        pl.col("temperature").fill_null(train_temp_median)
+        pl.col("kcal").fill_null(value=train_kcal_median),
+        pl.col("precipitation").fill_null(value=train_precipitation_median),
+        pl.col("temperature").fill_null(value=train_temp_median)
     ])
 
     return (df_train_filled, df_test_filled,
