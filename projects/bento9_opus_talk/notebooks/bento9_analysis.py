@@ -324,11 +324,11 @@ def modeling_header(mo):
 def ridge_model(X_train, y_train, Ridge, TimeSeriesSplit, mean_squared_error, np):
     """Ridge回帰モデルの訓練と時系列交差検証"""
     # Ridge回帰モデル
-    tscv = TimeSeriesSplit(n_splits=5)
+    _tscv = TimeSeriesSplit(n_splits=5)
     ridge = Ridge(alpha=1.0)
 
     ridge_cv_scores = []
-    for _train_idx, _val_idx in tscv.split(X_train):
+    for _train_idx, _val_idx in _tscv.split(X_train):
         _X_tr, _X_val = X_train.iloc[_train_idx], X_train.iloc[_val_idx]
         _y_tr, _y_val = y_train.iloc[_train_idx], y_train.iloc[_val_idx]
 
@@ -340,7 +340,7 @@ def ridge_model(X_train, y_train, Ridge, TimeSeriesSplit, mean_squared_error, np
     # 全訓練データで再学習
     ridge.fit(X_train, y_train)
 
-    return ridge, ridge_cv_scores, tscv
+    return ridge, ridge_cv_scores
 
 
 @app.cell
@@ -389,10 +389,10 @@ def lightgbm_model(X_train, y_train, X_test, lgb, TimeSeriesSplit, mean_squared_
             'reg_lambda': trial.suggest_float('reg_lambda', 0.0, 1.0),
         }
 
-        tscv = TimeSeriesSplit(n_splits=5)
+        _tscv = TimeSeriesSplit(n_splits=5)
         cv_scores = []
 
-        for _train_idx, _val_idx in tscv.split(X_train):
+        for _train_idx, _val_idx in _tscv.split(X_train):
             _X_tr, _X_val = X_train.iloc[_train_idx], X_train.iloc[_val_idx]
             _y_tr, _y_val = y_train.iloc[_train_idx], y_train.iloc[_val_idx]
 
@@ -426,10 +426,10 @@ def lightgbm_model(X_train, y_train, X_test, lgb, TimeSeriesSplit, mean_squared_
     })
 
     # 最良パラメータで再学習
-    tscv = TimeSeriesSplit(n_splits=5)
+    _tscv = TimeSeriesSplit(n_splits=5)
     lgb_cv_scores = []
 
-    for _train_idx, _val_idx in tscv.split(X_train):
+    for _train_idx, _val_idx in _tscv.split(X_train):
         _X_tr, _X_val = X_train.iloc[_train_idx], X_train.iloc[_val_idx]
         _y_tr, _y_val = y_train.iloc[_train_idx], y_train.iloc[_val_idx]
 
