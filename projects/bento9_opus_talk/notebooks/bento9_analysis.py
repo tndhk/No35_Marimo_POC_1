@@ -328,14 +328,14 @@ def ridge_model(X_train, y_train, Ridge, TimeSeriesSplit, mean_squared_error, np
     ridge = Ridge(alpha=1.0)
 
     ridge_cv_scores = []
-    for train_idx, val_idx in tscv.split(X_train):
-        X_tr, X_val = X_train.iloc[train_idx], X_train.iloc[val_idx]
-        y_tr, y_val = y_train.iloc[train_idx], y_train.iloc[val_idx]
+    for _train_idx, _val_idx in tscv.split(X_train):
+        _X_tr, _X_val = X_train.iloc[_train_idx], X_train.iloc[_val_idx]
+        _y_tr, _y_val = y_train.iloc[_train_idx], y_train.iloc[_val_idx]
 
-        ridge.fit(X_tr, y_tr)
-        y_pred = ridge.predict(X_val)
-        rmse = np.sqrt(mean_squared_error(y_val, y_pred))
-        ridge_cv_scores.append(rmse)
+        ridge.fit(_X_tr, _y_tr)
+        _y_pred = ridge.predict(_X_val)
+        _rmse = np.sqrt(mean_squared_error(_y_val, _y_pred))
+        ridge_cv_scores.append(_rmse)
 
     # 全訓練データで再学習
     ridge.fit(X_train, y_train)
@@ -392,12 +392,12 @@ def lightgbm_model(X_train, y_train, X_test, lgb, TimeSeriesSplit, mean_squared_
         tscv = TimeSeriesSplit(n_splits=5)
         cv_scores = []
 
-        for train_idx, val_idx in tscv.split(X_train):
-            X_tr, X_val = X_train.iloc[train_idx], X_train.iloc[val_idx]
-            y_tr, y_val = y_train.iloc[train_idx], y_train.iloc[val_idx]
+        for _train_idx, _val_idx in tscv.split(X_train):
+            _X_tr, _X_val = X_train.iloc[_train_idx], X_train.iloc[_val_idx]
+            _y_tr, _y_val = y_train.iloc[_train_idx], y_train.iloc[_val_idx]
 
-            train_data = lgb.Dataset(X_tr, label=y_tr)
-            val_data = lgb.Dataset(X_val, label=y_val, reference=train_data)
+            train_data = lgb.Dataset(_X_tr, label=_y_tr)
+            val_data = lgb.Dataset(_X_val, label=_y_val, reference=train_data)
 
             model = lgb.train(
                 params,
@@ -407,9 +407,9 @@ def lightgbm_model(X_train, y_train, X_test, lgb, TimeSeriesSplit, mean_squared_
                 callbacks=[lgb.early_stopping(stopping_rounds=50, verbose=False)]
             )
 
-            y_pred = model.predict(X_val, num_iteration=model.best_iteration)
-            rmse = np.sqrt(mean_squared_error(y_val, y_pred))
-            cv_scores.append(rmse)
+            _y_pred = model.predict(_X_val, num_iteration=model.best_iteration)
+            _rmse = np.sqrt(mean_squared_error(_y_val, _y_pred))
+            cv_scores.append(_rmse)
 
         return np.mean(cv_scores)
 
@@ -429,12 +429,12 @@ def lightgbm_model(X_train, y_train, X_test, lgb, TimeSeriesSplit, mean_squared_
     tscv = TimeSeriesSplit(n_splits=5)
     lgb_cv_scores = []
 
-    for train_idx, val_idx in tscv.split(X_train):
-        X_tr, X_val = X_train.iloc[train_idx], X_train.iloc[val_idx]
-        y_tr, y_val = y_train.iloc[train_idx], y_train.iloc[val_idx]
+    for _train_idx, _val_idx in tscv.split(X_train):
+        _X_tr, _X_val = X_train.iloc[_train_idx], X_train.iloc[_val_idx]
+        _y_tr, _y_val = y_train.iloc[_train_idx], y_train.iloc[_val_idx]
 
-        train_data = lgb.Dataset(X_tr, label=y_tr)
-        val_data = lgb.Dataset(X_val, label=y_val, reference=train_data)
+        train_data = lgb.Dataset(_X_tr, label=_y_tr)
+        val_data = lgb.Dataset(_X_val, label=_y_val, reference=train_data)
 
         model = lgb.train(
             best_params,
@@ -444,9 +444,9 @@ def lightgbm_model(X_train, y_train, X_test, lgb, TimeSeriesSplit, mean_squared_
             callbacks=[lgb.early_stopping(stopping_rounds=50, verbose=False)]
         )
 
-        y_pred = model.predict(X_val, num_iteration=model.best_iteration)
-        rmse = np.sqrt(mean_squared_error(y_val, y_pred))
-        lgb_cv_scores.append(rmse)
+        _y_pred = model.predict(_X_val, num_iteration=model.best_iteration)
+        _rmse = np.sqrt(mean_squared_error(_y_val, _y_pred))
+        lgb_cv_scores.append(_rmse)
 
     # 全訓練データで最終モデルを訓練
     train_data_full = lgb.Dataset(X_train, label=y_train)
