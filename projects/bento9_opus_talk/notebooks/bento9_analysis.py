@@ -201,16 +201,16 @@ def categorical_encoding(df_train_fe2, df_test_fe2, pl):
     """曜日と天気をカテゴリカルエンコーディング"""
     # カテゴリカル特徴量のエンコーディング
     week_map = {"月": 0, "火": 1, "水": 2, "木": 3, "金": 4, "土": 5, "日": 6}
-    weather_map = {"快晴": 0, "晴れ": 1, "薄曇": 2, "曇": 3, "雨": 4}
+    weather_map = {"快晴": 0, "晴れ": 1, "薄曇": 2, "曇": 3, "雨": 4, "雪": 5, "雷電": 6}
 
     df_train_fe3 = df_train_fe2.with_columns([
-        pl.col("week").replace(week_map).alias("week_encoded"),
-        pl.col("weather").replace(weather_map).alias("weather_encoded")
+        pl.col("week").replace(week_map).cast(pl.Int64).alias("week_encoded"),
+        pl.col("weather").replace(weather_map).cast(pl.Int64).alias("weather_encoded")
     ])
 
     df_test_fe3 = df_test_fe2.with_columns([
-        pl.col("week").replace(week_map).alias("week_encoded"),
-        pl.col("weather").replace(weather_map).alias("weather_encoded")
+        pl.col("week").replace(week_map).cast(pl.Int64).alias("week_encoded"),
+        pl.col("weather").replace(weather_map).cast(pl.Int64).alias("weather_encoded")
     ])
 
     return df_train_fe3, df_test_fe3, week_map, weather_map
