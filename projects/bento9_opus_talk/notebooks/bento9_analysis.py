@@ -278,5 +278,36 @@ def verify_no_nulls(df_train_filled, df_test_filled, mo):
     return train_nulls_after, test_nulls_after
 
 
+@app.cell
+def feature_selection(df_train_filled, df_test_filled, pl):
+    """モデリング用の特徴量を選択"""
+    # 特徴量選択
+    feature_cols = [
+        "year", "month", "day", "weekday", "is_holiday",
+        "week_encoded", "weather_encoded",
+        "soldout", "payday",
+        "kcal", "precipitation", "temperature"
+    ]
+
+    X_train = df_train_filled.select(feature_cols).to_pandas()
+    y_train = df_train_filled.select("y").to_pandas()["y"]
+    X_test = df_test_filled.select(feature_cols).to_pandas()
+
+    return X_train, y_train, X_test, feature_cols
+
+
+@app.cell
+def dataset_info(mo, X_train, y_train, X_test, feature_cols):
+    """データセット準備完了の確認"""
+    mo.md(f"""
+    ## 3. モデリング準備完了
+
+    - 訓練データ: {X_train.shape[0]} samples × {X_train.shape[1]} features
+    - テストデータ: {X_test.shape[0]} samples × {X_test.shape[1]} features
+    - 特徴量リスト: {', '.join(feature_cols)}
+    """)
+    return
+
+
 if __name__ == "__main__":
     app.run()
